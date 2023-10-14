@@ -90,41 +90,16 @@ ListaVertices *ListaVertices::deleta(int id)
 {
     Vertice *busca = this->busca(id);
 
-    if (busca != nullptr){
-
-        deleteAuxiliar(busca);
-    }
-
-    tamanho--;
-    return this;
-}
-/*
-ListaArestas *ListaArestas::deleta(Vertice *item)
-{
-    Aresta *busca = this->busca(item);
     if (busca != nullptr)
+    {
+
         deleteAuxiliar(busca);
+    }
 
     tamanho--;
     return this;
 }
-*/
-/*
-Aresta *ListaArestas::busca(Vertice *item)
-{
-    Aresta *iteracaoAtual = inicio;
 
-    while (iteracaoAtual != nullptr)
-    {
-        if (item->compara(iteracaoAtual))
-        {
-            return iteracaoAtual;
-        }
-        iteracaoAtual = iteracaoAtual->proximo;
-    }
-    return nullptr;
-}
-*/
 Vertice *ListaVertices::busca(int id)
 {
     Vertice *iteracaoAtual = inicio;
@@ -209,8 +184,28 @@ void ListaVertices::imprimeLista()
 
         it = it->proximo;
     }
-
     cout << endl;
+}
 
+Vertice* ListaVertices::desempilhaPrimeiro()
+{
+    if(this->ehVazia()) return nullptr;
+
+    Vertice* retorno = inicio;
+    inicio=inicio->proximo;
+
+    if (inicio != nullptr)
+    {
+        inicio->anterior = nullptr;
+    }
+    else
+    {
+        fim = nullptr;
+    }
+
+    tamanho--;
+    retorno->proximo = retorno->anterior = nullptr;
+
+    return retorno;
 }
 

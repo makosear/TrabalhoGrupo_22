@@ -18,10 +18,12 @@ bool Grafo::insereVertice(int id_origem, float peso = 1)
     if (vertices->busca(id_origem) == nullptr)
     {
         vertices->insere(id_origem, new Vertice(id_origem, peso));
+        return true;
     }
     else
     {
         cout << "ID " << id_origem << " ja existe" << endl;
+        return false;
     }
 }
 void Grafo::removeVertice(int id_origem)
@@ -64,7 +66,11 @@ bool Grafo::insereAresta(int id_origem, int id_destino, float peso = 1)
             destino->insereAresta(origem, peso);
             destino->incEntrada();
         }
+
+        return true;
     }
+
+    return false;
 }
 void Grafo::removeAresta(int id_origem, int id_destino)
 {
@@ -85,10 +91,11 @@ void Grafo::removeAresta(int id_origem, int id_destino)
     }
 }
 
-void Grafo::imprimirGraphviz()
+void Grafo::imprimirGraphviz(string nome)
 {
     ofstream output;
-    output.open("grafo.dot");
+    output.open(nome + ".dot");
+
     cout << "Abrindo o arquivo " << endl;
 
     if (output.is_open())
@@ -104,7 +111,7 @@ void Grafo::imprimirGraphviz()
         else
         {
             /// inserindo no output um grafo n�o direcionado
-            output << "graph teste{" << endl;
+            output << "graph " << nome << " {" << endl;
             conector = " -- ";
             cout << "Grafo não direcionado " << endl;
         }
@@ -112,16 +119,21 @@ void Grafo::imprimirGraphviz()
         vertices->iterator = vertices->iteratorInicio();
         while (vertices->iterator != nullptr)
         {
-            cout << "Vertice id " << vertices->iterator->getId() << endl;
             lista = vertices->iterator->getArestas();
-
             lista->iterator = lista->iteratorInicio();
 
-            while (lista->iterator != nullptr)
+            if(lista->iterator == nullptr)
             {
-                Aresta *a = lista->iterator;
-                output << vertices->iterator->getId() << conector << a->getDestino()->getId() << endl;
-                lista->proximo();
+                output << vertices->iterator->getId() << endl;
+            }
+            else
+            {
+                while (lista->iterator != nullptr)
+                {
+                    Aresta *a = lista->iterator;
+                    output << vertices->iterator->getId() << conector << a->getDestino()->getId() << endl;
+                    lista->proximo();
+                }
             }
             vertices->proximo();
         }
@@ -130,9 +142,48 @@ void Grafo::imprimirGraphviz()
     output << "}" << endl;
     output.close();
 
-    cout << "fim" << endl;
+
+    string command = "dot -Tpng ";
+    command = command.append(nome);
+    command = command.append(".dot -o ");
+    command = command.append(nome + ".png");
+
+    cout << command << endl;
     system("pause");
 
-    system("dot -Tpng grafo.dot -o grafo.png");
+    system(command.data());
     system("pause");
+}
+
+Grafo* Grafo::buscaEmLargura(int id)
+{
+    Vertice* inicio = this->vertices->busca(id);
+    Grafo* resultado = new Grafo(0,1,0,0);
+
+    ListaVertices* pilhaVertices = new ListaVertices();
+    pilhaVertices->insereFinal(inicio);
+
+    while(!pilhaVertices->ehVazia())
+    {
+        Vertice* atual = pilhaVertices->desempilhaPrimeiro();
+        ListaArestas* arestas = atual->getArestas();
+        arestas->imprimeLista();
+        arestas->iterator = arestas->iteratorInicio();
+
+        resultado->insereVertice(atual->getId());
+        while(arestas->iterator != nullptr)
+        {
+            if(resultado->insereVertice(arestas->iterator->getDestino()->getId()))
+            {
+                resultado->insereAresta( atual->getId() ,arestas->iterator->getDestino()->getId(), 1);
+                cout << "Destino " << arestas->iterator->getDestino()->getId() << endl;
+                pilhaVertices->insereInicio(arestas->iterator->getDestino());
+            }
+            arestas->proximo();
+        }
+    }
+
+    system("pause");
+    resultado->imprimirGraphviz("buscaEmLargura");
+    return resultado;
 }
