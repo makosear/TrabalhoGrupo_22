@@ -1,0 +1,233 @@
+# depslib dependency file v1.0
+1696777868 source:c:\users\hugo_\onedrive\햞ea de trabalho\grafos\grafos\grafo.cpp
+	"Grafo.h"
+
+1696716445 c:\users\hugo_\onedrive\햞ea de trabalho\grafos\grafos\grafo.h
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<math.h>
+	<utility>
+	<tuple>
+	<iomanip>
+	<stdlib.h>
+	<chrono>
+	<limits>
+	"Vertice.h"
+	<iostream>
+	<fstream>
+	"TabelaHash.h"
+	"ListaVertices.h"
+	"ListaArestas.h"
+
+1696716445 c:\users\hugo_\onedrive\햞ea de trabalho\grafos\grafos\vertice.h
+	"Aresta.cpp"
+	"ListaVertices.h"
+	"ListaArestas.h"
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<math.h>
+	<utility>
+	<tuple>
+	<iomanip>
+	<stdlib.h>
+	<chrono>
+	<limits>
+
+1696720105 c:\users\hugo_\onedrive\햞ea de trabalho\grafos\grafos\aresta.cpp
+	"Vertice.h"
+
+1696773135 c:\users\hugo_\onedrive\햞ea de trabalho\grafos\grafos\listavertices.h
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<math.h>
+	<utility>
+	<tuple>
+	<iomanip>
+	<stdlib.h>
+	<chrono>
+	<limits>
+	"Aresta.cpp"
+	"Vertice.h"
+
+1696773135 c:\users\hugo_\onedrive\햞ea de trabalho\grafos\grafos\listaarestas.h
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<math.h>
+	<utility>
+	<tuple>
+	<iomanip>
+	<stdlib.h>
+	<chrono>
+	<limits>
+	"Aresta.cpp"
+
+1696773082 c:\users\hugo_\onedrive\햞ea de trabalho\grafos\grafos\tabelahash.h
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<math.h>
+	<utility>
+	<tuple>
+	<iomanip>
+	<stdlib.h>
+	<chrono>
+	<limits>
+	"Vertice.h"
+	"ListaVertices.h"
+	"ListaArestas.h"
+	<vector>
+
+1696773782 source:c:\users\hugo_\onedrive\햞ea de trabalho\grafos\grafos\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<math.h>
+	<utility>
+	<tuple>
+	<iomanip>
+	<stdlib.h>
+	<chrono>
+	<limits>
+	"Grafo.h"
+
+1696777827 source:c:\users\hugo_\onedrive\햞ea de trabalho\grafos\grafos\tabelahash.cpp
+	"TabelaHash.h"
+
+1696720448 source:c:\users\hugo_\onedrive\햞ea de trabalho\grafos\grafos\vertice.cpp
+	"Vertice.h"
+
+1696720105 source:c:\users\hugo_\onedrive\햞ea de trabalho\grafos\grafos\aresta.cpp
+	"Vertice.h"
+
+1696776698 source:c:\users\hugo_\onedrive\햞ea de trabalho\grafos\grafos\listaarestas.cpp
+	"ListaArestas.h"
+
+1696773454 source:c:\users\hugo_\onedrive\햞ea de trabalho\grafos\grafos\listavertices.cpp
+	"ListaVertices.h"
+
+1696720105 source:c:\users\hugo_\onedrive\햞ea de trabalho\grafo\trabalhogrupo_22\aresta.cpp
+	"Vertice.h"
+
+1696716445 c:\users\hugo_\onedrive\햞ea de trabalho\grafo\trabalhogrupo_22\vertice.h
+	"Aresta.cpp"
+	"ListaVertices.h"
+	"ListaArestas.h"
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<math.h>
+	<utility>
+	<tuple>
+	<iomanip>
+	<stdlib.h>
+	<chrono>
+	<limits>
+
+1696720105 c:\users\hugo_\onedrive\햞ea de trabalho\grafo\trabalhogrupo_22\aresta.cpp
+	"Vertice.h"
+
+1696773135 c:\users\hugo_\onedrive\햞ea de trabalho\grafo\trabalhogrupo_22\listavertices.h
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<math.h>
+	<utility>
+	<tuple>
+	<iomanip>
+	<stdlib.h>
+	<chrono>
+	<limits>
+	"Aresta.cpp"
+	"Vertice.h"
+
+1696773135 c:\users\hugo_\onedrive\햞ea de trabalho\grafo\trabalhogrupo_22\listaarestas.h
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<math.h>
+	<utility>
+	<tuple>
+	<iomanip>
+	<stdlib.h>
+	<chrono>
+	<limits>
+	"Aresta.cpp"
+
+1697052712 source:c:\users\hugo_\onedrive\햞ea de trabalho\grafo\trabalhogrupo_22\grafo.cpp
+	"Grafo.h"
+
+1697052712 c:\users\hugo_\onedrive\햞ea de trabalho\grafo\trabalhogrupo_22\grafo.h
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<math.h>
+	<utility>
+	<tuple>
+	<iomanip>
+	<stdlib.h>
+	<chrono>
+	<limits>
+	"Vertice.h"
+	<iostream>
+	<fstream>
+	"TabelaHash.h"
+	"ListaVertices.h"
+	"ListaArestas.h"
+
+1696773082 c:\users\hugo_\onedrive\햞ea de trabalho\grafo\trabalhogrupo_22\tabelahash.h
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<math.h>
+	<utility>
+	<tuple>
+	<iomanip>
+	<stdlib.h>
+	<chrono>
+	<limits>
+	"Vertice.h"
+	"ListaVertices.h"
+	"ListaArestas.h"
+	<vector>
+
+1697052072 source:c:\users\hugo_\onedrive\햞ea de trabalho\grafo\trabalhogrupo_22\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<math.h>
+	<utility>
+	<tuple>
+	<iomanip>
+	<stdlib.h>
+	<chrono>
+	<limits>
+	"Grafo.h"
+
+1697053130 source:c:\users\hugo_\onedrive\햞ea de trabalho\grafo\trabalhogrupo_22\tabelahash.cpp
+	"TabelaHash.h"
+
+1696948844 source:c:\users\hugo_\onedrive\햞ea de trabalho\grafo\trabalhogrupo_22\vertice.cpp
+	"Vertice.h"
+
+1696947138 source:c:\users\hugo_\onedrive\햞ea de trabalho\grafo\trabalhogrupo_22\listaarestas.cpp
+	"ListaArestas.h"
+
+1697053274 source:c:\users\hugo_\onedrive\햞ea de trabalho\grafo\trabalhogrupo_22\listavertices.cpp
+	"ListaVertices.h"
+

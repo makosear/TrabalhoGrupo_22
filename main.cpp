@@ -8,46 +8,49 @@
 #include <iomanip>
 #include <stdlib.h>
 #include <chrono>
-#include "Grafo.hpp"
 #include <limits>
 
-float INFINITO = INT_MAX/2;
+#include "Grafo.h"
+float INFINITO = 214748364 / 2;
 
 using namespace std;
 
 int menuManual()
 {
     int escolha = -1;
-    cout <<"[menu]" << endl;
-    cout <<"(1)Inserir novo vertice" << endl;
-    cout <<"(2)Inserir nova aresta" << endl;
-    cout <<"(3)Remover vertice" << endl;
-    cout <<"(4)Remover aresta" << endl;
-    cout << endl <<"(-1)sair" <<endl;
+    cout << "[menu]" << endl;
+    cout << "(1)Inserir novo vertice" << endl;
+    cout << "(2)Inserir nova aresta" << endl;
+    cout << "(3)Remover vertice" << endl;
+    cout << "(4)Remover aresta" << endl;
+    cout << endl
+         << "(-1)sair" << endl;
 
     cin >> escolha;
 
-    //system("CLS");
+    // system("CLS");
     return escolha;
 }
 int menuAlgoritimos()
 {
     int escolha;
-    cout<< "[menu algoritimos]" << endl;
-    cout<< "(1)Subgrafo vertice-induzido por feixo transitivo direto" << endl;
-    cout<< "(2)Subgrafo vertice-induzido por feixo transitivo indireto"<<endl;
-    cout<< "(3)Caminho Minimo Djkstra" << endl;
-    cout<< "(4)Caminho Minimo floyd" << endl;
-    cout<< "(5)Arvore Geradora Minima - Prim" << endl;
-    cout<< "(6)Arvore Geradora Minima - Krusal" << endl;
-    cout<< "(7)Caminhamento em largura" << endl;
-    cout<< "(8)Ordenação topoligica" << endl;
-    cout<< "(9)Mudancas manuais" << endl;
-    cout<< endl << "(-1)Sair" << endl;
+    cout << "[menu algoritimos]" << endl;
+    cout << "(1)Subgrafo vertice-induzido por feixo transitivo direto" << endl;
+    cout << "(2)Subgrafo vertice-induzido por feixo transitivo indireto" << endl;
+    cout << "(3)Caminho Minimo Djkstra" << endl;
+    cout << "(4)Caminho Minimo floyd" << endl;
+    cout << "(5)Arvore Geradora Minima - Prim" << endl;
+    cout << "(6)Arvore Geradora Minima - Krusal" << endl;
+    cout << "(7)Caminhamento em largura" << endl;
+    cout << "(8)Ordenaï¿½ï¿½o topoligica" << endl;
+    cout << "(9)Mudancas manuais" << endl;
+    cout << "(10)Imprimir com Graphviz" << endl;
+    cout << endl
+         << "(-1)Sair" << endl;
     cin >> escolha;
     return escolha;
 }
-void escolhasManuais(Grafo* g)
+void escolhasManuais(Grafo *g)
 {
     bool exit = false;
     int escolha;
@@ -56,7 +59,7 @@ void escolhasManuais(Grafo* g)
         int id_o;
         int id_d;
         float p;
-        //g->TESTE_imprimeGrafo();
+        // g->TESTE_imprimeGrafo();
         system("CLS");
         escolha = menuManual();
 
@@ -71,14 +74,14 @@ void escolhasManuais(Grafo* g)
         case 2:
             cout << "[INSERIR NOVA ARESTA]" << endl;
             cout << "infome os ids de origem e destino respectivamente" << endl;
-            cin >>id_o;
-            cin >>id_d;
+            cin >> id_o;
+            cin >> id_d;
             cout << "informe o peso da aresta" << endl;
             cin >> p;
             g->insereAresta(id_o, id_d, p);
             break;
         case 3:
-            cout << "[REMOVER VERTICE]" <<endl;
+            cout << "[REMOVER VERTICE]" << endl;
             cout << " informe o id do vertice" << endl;
             cin >> id_o;
             g->removeVertice(id_o);
@@ -98,18 +101,18 @@ void escolhasManuais(Grafo* g)
             break;
         }
     }
-    while(!exit);
+    while (!exit);
 }
-void escolhasAlgoritimos(Grafo* g , ofstream& output)
+void escolhasAlgoritimos(Grafo *g, ofstream &output)
 {
     bool exit = false;
     int escolha;
-    Grafo* saida = nullptr;
+    Grafo *saida = nullptr;
     do
     {
         int id_o;
         int id_d;
-        //g->TESTE_imprimeGrafo();
+        // g->TESTE_imprimeGrafo();
         system("CLS");
         escolha = menuAlgoritimos();
 
@@ -119,18 +122,18 @@ void escolhasAlgoritimos(Grafo* g , ofstream& output)
             cout << "[SUBGRAFO VERTICE INDUZIDO POR FEIXO TRANSITIVO DIRETO]" << endl;
             cout << "infome o id de origem" << endl;
             cin >> id_o;
-            saida = g->SGVI_feixoTransitivoDireto(id_o , output);
-            //cout << "[TESTE]" << endl << endl;
-            //saida->TESTE_imprimeGrafo();
+            //saida = g->SGVI_feixoTransitivoDireto(id_o, output);
+            // cout << "[TESTE]" << endl << endl;
+            // saida->TESTE_imprimeGrafo();
 
             break;
         case 2:
             cout << "[SUBGRAFO VERTICE INDUZIDO POR FEIXO TRANSITIVO INDIRETO]" << endl;
             cout << "infome o id de busca" << endl;
             cin >> id_o;
-            saida = g->SGVI_feixoTransitivoIndireto(id_o , output);
-            //cout << "[TESTE]" << endl << endl;
-            //saida->TESTE_imprimeGrafo();
+            //saida = g->SGVI_feixoTransitivoIndireto(id_o, output);
+            // cout << "[TESTE]" << endl << endl;
+            // saida->TESTE_imprimeGrafo();
 
             break;
         case 3:
@@ -138,40 +141,47 @@ void escolhasAlgoritimos(Grafo* g , ofstream& output)
             cout << "infome os ids de origem e destino respectivamente" << endl;
             cin >> id_o;
             cin >> id_d;
-            g->dijkstra(id_o, id_d , output);
+            //g->dijkstra(id_o, id_d, output);
             break;
         case 4:
             cout << "[MENOR CAMINHO - FLOYD]" << endl;
             cout << "infome os ids de origem e destino respectivamente" << endl;
             cin >> id_o;
             cin >> id_d;
-            g->floyd(id_o,id_d , output);
+            //g->floyd(id_o, id_d, output);
             break;
         case 5:
             cout << "[ARVORE GERADORA MINIMA - PRIM] " << endl;
-//            //cout << "criando grafo manualmente..." << endl;
-//            Grafo* f = new Grafo(0 , 0  , 1 , 0);
-//            escolhasManuais(f);
-//            f->agmPrim();
+            //            //cout << "criando grafo manualmente..." << endl;
+            //            Grafo* f = new Grafo(0 , 0  , 1 , 0);
+            //            escolhasManuais(f);
+            //            f->agmPrim();
 
-            g->agmPrim(output);
+            //g->agmPrim(output);
             break;
         case 6:
             cout << "[ARVORE GERADORA MINIMA - KRUSKAL]" << endl;
-            g->agmKruskal(output);
+            // g->agmKruskal(output);
             break;
         case 7:
             cout << "[BUSCA EM LARGURA]" << endl;
             cout << "infome o id de inicio" << endl;
             cin >> id_o;
-            saida = g->buscaEmLargura(id_o , output);
-            //g->buscaEmProfundidade(1);
+            //saida = g->buscaEmLargura(id_o, output);
+            // g->buscaEmProfundidade(1);
+            g->imprimirGraphviz();
             break;
         case 8:
-            cout << "[ORDENAÇÃO TOPOLOGICA]" << endl;
+            cout << "[ORDENAï¿½ï¿½O TOPOLOGICA]" << endl;
             cout << "infome o id de inicio" << endl;
             cin >> id_o;
-            g->ordenacaoTopologica(output);
+            g->imprimirGraphviz();
+            break;
+
+        case 10:
+            cout << "[ImpressÃ£o Graphviz]" << endl;
+            g->imprimirGraphviz();
+            break;
 
         case 9:
             escolhasManuais(g);
@@ -184,15 +194,14 @@ void escolhasAlgoritimos(Grafo* g , ofstream& output)
             break;
         }
 
-        //if(saida != nullptr) delete saida;
-        //so pra não deixar os grafos criados perdidos em memoria
+        // if(saida != nullptr) delete saida;
+        // so pra nï¿½o deixar os grafos criados perdidos em memoria
     }
-    while(!exit);
+    while (!exit);
 }
-Grafo* leituraPorAraquivo(ifstream& input_file, int directed, int weightedEdge, int weightedNode)
+Grafo *leituraPorAraquivo(ifstream &input_file, int directed, int weightedEdge, int weightedNode)
 {
-
-    float peso_vertice_o = 1 ;
+    float peso_vertice_o = 1;
     float peso_vertice_d = 1;
     float peso_aresta = 1;
     float ordem;
@@ -200,11 +209,11 @@ Grafo* leituraPorAraquivo(ifstream& input_file, int directed, int weightedEdge, 
     int id_d;
 
     input_file >> ordem;
-    Grafo* g = new Grafo(0, directed, weightedEdge, weightedNode );
+    Grafo *g = new Grafo(0, directed, weightedEdge, weightedNode);
 
-    if(g->temPesoAresta() && g->temPesoVertice())
+    if (g->temPesoAresta() && g->temPesoVertice())
     {
-        while(input_file >> id_o >> peso_vertice_o >> id_d >> peso_vertice_d >> peso_aresta)
+        while (input_file >> id_o >> peso_vertice_o >> id_d >> peso_vertice_d >> peso_aresta)
         {
             g->insereVertice(id_o, peso_vertice_o);
             cout << "inserendo vertice " << id_o << "de peso " << peso_vertice_o << endl;
@@ -214,9 +223,9 @@ Grafo* leituraPorAraquivo(ifstream& input_file, int directed, int weightedEdge, 
             cout << "inserindo arestas entre " << id_o << " e " << id_d << " de peso " << peso_aresta << endl;
         }
     }
-    else if(g->temPesoAresta())
+    else if (g->temPesoAresta())
     {
-        while(input_file >> id_o >> id_d >> peso_aresta)
+        while (input_file >> id_o >> id_d >> peso_aresta)
         {
             g->insereVertice(id_o, peso_vertice_o);
             cout << "inserendo vertice " << id_o << "de peso " << peso_vertice_o << endl;
@@ -226,9 +235,9 @@ Grafo* leituraPorAraquivo(ifstream& input_file, int directed, int weightedEdge, 
             cout << "inserindo arestas entre " << id_o << " e " << id_d << " de peso " << peso_aresta << endl;
         }
     }
-    else if(g->temPesoVertice())
+    else if (g->temPesoVertice())
     {
-        while(input_file >> id_o >> peso_vertice_o >> id_d >> peso_vertice_d)
+        while (input_file >> id_o >> peso_vertice_o >> id_d >> peso_vertice_d)
         {
             g->insereVertice(id_o, peso_vertice_o);
             cout << "inserendo vertice " << id_o << "de peso " << peso_vertice_o << endl;
@@ -240,7 +249,7 @@ Grafo* leituraPorAraquivo(ifstream& input_file, int directed, int weightedEdge, 
     }
     else
     {
-        while(input_file >> id_o >>  id_d)
+        while (input_file >> id_o >> id_d)
         {
             g->insereVertice(id_o, peso_vertice_o);
             cout << "inserendo vertice " << id_o << "de peso " << peso_vertice_o << endl;
@@ -256,51 +265,64 @@ Grafo* leituraPorAraquivo(ifstream& input_file, int directed, int weightedEdge, 
 //int main()
 //{
 //    ifstream input;
+//    ofstream output_file;
+//    output_file.open("TESTEOut", ios::out | ios::trunc);
 //    input.open("grafo_125.txt", ios::in);
 //    if(input.is_open())
 //    {
-//        Grafo * xd = leituraPorAraquivo(input, 1, 1, 0);
-//        escolhasAlgoritimos(xd);
+//        Grafo * xd = leituraPorAraquivo(input, 0, 1, 0);
+//        escolhasAlgoritimos(xd , output_file);
 //    }
 //    input.close();
-////    Grafo * xd = new Grafo(0,0,0,0);
-////    escolhasAlgoritimos(xd);
 //    return 0;
 //}
-int main(int argc, char const *argv[]) {
 
-    //Verificação se todos os parâmetros do programa foram entrados
-    if (argc != 6) {
+int main(int argc, char const *argv[])
+{
+    /*
+        //Verificaï¿½ï¿½o se todos os parï¿½metros do programa foram entrados
+        if (argc != 6) {
 
-        cout << "ERROR: Expecting: ./<program_name> <input_file> <output_file> <directed> <weighted_edge> <weighted_node> " << endl;
-        return 1;
+            cout << "ERROR: Expecting: ./<program_name> <input_file> <output_file> <directed> <weighted_edge> <weighted_node> " << endl;
+            return 1;
 
-    }
+        }
 
-    string program_name(argv[0]);
-    string input_file_name(argv[1]);
+        string program_name(argv[0]);
+        string input_file_name(argv[1]);
 
-    string instance;
-    if(input_file_name.find("v") <= input_file_name.size()){
-        string instance = input_file_name.substr(input_file_name.find("v"));
-        cout << "Running " << program_name << " with instance " << instance << " ... " << endl;
-    }
+        string instance;
+        if(input_file_name.find("v") <= input_file_name.size()){
+            string instance = input_file_name.substr(input_file_name.find("v"));
+            cout << "Running " << program_name << " with instance " << instance << " ... " << endl;
+        }
+
+        //Abrindo arquivo de entrada
+        ifstream input_file;
+        ofstream output_file;
+        input_file.open(argv[1], ios::in);
+        output_file.open(argv[2], ios::out | ios::trunc);
+
+        Grafo* graph;
+
+        if(input_file.is_open()){
+
+            graph = leituraPorAraquivo(input_file, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
+
+        }else
+            cout << "Unable to open " << argv[1];
+
+    */
 
     //Abrindo arquivo de entrada
     ifstream input_file;
     ofstream output_file;
-    input_file.open(argv[1], ios::in);
-    output_file.open(argv[2], ios::out | ios::trunc);
+    input_file.open("teste", ios::in);
+    output_file.open("TESTEOut", ios::out | ios::trunc);
 
-    Grafo* graph;
-
-    if(input_file.is_open()){
-
-        graph = leituraPorAraquivo(input_file, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
-
-    }else
-        cout << "Unable to open " << argv[1];
-
+    Grafo *grafo = new Grafo(1, 0, 0, 0);
+    escolhasAlgoritimos(grafo, output_file);
 
     return 0;
 }
+

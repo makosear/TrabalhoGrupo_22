@@ -1,136 +1,53 @@
-#include "Vertice.hpp"
+#include "Vertice.h"
 
-Vertice::Vertice(int novoId,float novoPeso)
+Vertice::Vertice(int novoId, float novoPeso)
 {
-    this->id = novoId;
-    this->peso = novoPeso;
-    this->entrada = 0;
-    this->saida = 0;
-    this->primeiro_LA = nullptr;
-    this->ultimo_LA = nullptr;
-    this->ant = nullptr;
-    this->prox = nullptr;
+    id = novoId;
+    grauEntrada = 0;
+    grauSaida = 0;
+    peso = novoPeso;
+    arestas = new ListaArestas();
+
+    this->proximo = nullptr;
+    this->anterior = nullptr;
+
 }
+
 Vertice::~Vertice()
 {
-    //this->removeTodasArestas_LA(false);
-    Aresta* p = primeiro_LA;
-    Aresta* t;
-    while(p != nullptr)
-    {
-        t = p->getProx_LA();;
-        delete p;
-        p = t;
-    }
-    primeiro_LA = nullptr;
-    ultimo_LA = nullptr;
-    saida = 0;
-    this->primeiro_LA = nullptr;
-    this->ultimo_LA = nullptr;
-    this->ant = nullptr;
-    this->prox = nullptr;
+    id = -1;
+    grauEntrada = 0;
+    grauSaida = 0;
+    peso = 0;
+    arestas->limpaLista();
+    delete arestas;
 }
-Aresta* Vertice::buscaAresta_LA(int id_destino)
+
+Vertice *Vertice::insereAresta(Vertice *destino, float peso)
 {
-    Aresta* busca = primeiro_LA;
-    while(busca != nullptr)
-    {
-        if(busca->getDestino() != nullptr)
-        {
-            if(busca->getDestino()->getId() == id_destino)
-            {
-                return busca;
-            }
-        }
-        busca = busca->getProx_LA();
-    }
-    return nullptr;
+    if (destino == nullptr)
+        return nullptr;
+
+    Aresta *novaAresta = new Aresta(peso, destino, destino->getId());
+    // essa busca obrigatoriamente é por id
+    // porque a outra busca é por endereço de memória
+
+    if (arestas->busca(novaAresta->getDestino()->getId()) == nullptr)
+        arestas->insereFinal(novaAresta);
+
+    //cout << "Debug Arestas do Vertice id " << this->getId()<< endl;
+    //arestas->imprimeLista();
+    //system("pause");
 }
-void Vertice::insereAresta_LA(Vertice* pt_destino, float peso)
+Vertice *Vertice::removeAresta(int destino_id)
 {
-
-    Aresta* novaAresta = new Aresta;
-    novaAresta->setDestino(pt_destino);
-    novaAresta->setPeso(peso);
-
-    novaAresta->setProx(nullptr);
-    novaAresta->setAnt(ultimo_LA);
-
-    if(primeiro_LA == nullptr && ultimo_LA == nullptr) primeiro_LA = novaAresta;
-
-    else ultimo_LA->setProx(novaAresta);
-
-    novaAresta->getDestino()->incEntrada();
-    incSaida();
-    ultimo_LA = novaAresta;
+    arestas->deleta(destino_id);
 }
-void Vertice::removeTodasArestas_LA(bool ord)
+Vertice *Vertice::removeTodasArestas(bool ehDirecionado)
 {
-    ///essa funcao ta bugada
-    Aresta* p = primeiro_LA;
-    Aresta* t;
-    while(p != nullptr)
-    {
-        //cout << "Deletando aresta para" << p->getDestino()->getId() << endl;
-        if(!ord)
-        {
-            Vertice* temp = p->getDestino();
-            if(temp != nullptr) temp->removeAresta_LA(this->id);
-        }
-        t = p->getProx_LA();
-        delete p;
-        p = t;
-    }
-    primeiro_LA = nullptr;
-    ultimo_LA = nullptr;
-    saida = 0;
 }
-void Vertice::removeAresta_LA(int id_destino)
+Aresta *Vertice::buscaAresta(int destino_id)
 {
-    Aresta* busca = buscaAresta_LA(id_destino);
-    if(busca != nullptr)
-    {
-        bool eh_primeiro = (busca->getAnt_LA() == nullptr);
-        bool eh_ultimo = (busca->getProx_LA() == nullptr);
-        Aresta* apt = busca->getAnt_LA();
-        Aresta* ppt = busca->getProx_LA();
-
-        if(eh_primeiro && eh_ultimo)
-        {
-            primeiro_LA = nullptr;
-            ultimo_LA = nullptr;
-        }
-        else if(eh_primeiro)
-        {
-            primeiro_LA = ppt;
-            ppt->setAnt(nullptr);
-        }
-        else if(eh_ultimo)
-        {
-            ultimo_LA = apt;
-            apt->setProx(nullptr);
-        }
-        else
-        {
-            apt->setProx(ppt);
-            ppt->setAnt(apt);
-        }
-        busca->setAnt(nullptr);
-        busca->setProx(nullptr);
-        busca->getDestino()->decEntrada();
-        decSaida();
-
-        delete busca;
-    }
+    return arestas->busca(destino_id);
 }
-void Vertice::imprimeLista()
-{
-    Aresta* a = primeiro_LA;
-    while(a != nullptr)
-    {
 
-        cout << " " << a->getDestino()->getId() << " " << endl;
-        a = a->getProx_LA();
-    }
-    cout << endl;
-}
