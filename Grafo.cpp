@@ -7,6 +7,7 @@ Grafo::Grafo(int ehOrdenado, int temDirecao, int temPesoAresta, int temPesoVerti
     tem_peso_vertice = temPesoVertice == 1 ? true : false;
 
     this->vertices = new TabelaHash(2);
+#teste
 }
 Grafo::~Grafo()
 {
