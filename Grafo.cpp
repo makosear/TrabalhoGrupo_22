@@ -7,7 +7,6 @@ Grafo::Grafo(int ehOrdenado, int temDirecao, int temPesoAresta, int temPesoVerti
     tem_peso_vertice = temPesoVertice == 1 ? true : false;
 
     this->vertices = new TabelaHash(2);
-#teste
 }
 Grafo::~Grafo()
 {
@@ -136,4 +135,39 @@ void Grafo::imprimirGraphviz()
 
     system("dot -Tpng grafo.dot -o grafo.png");
     system("pause");
+}
+
+float dijkstra(int id_origem ,int id_destino , ofstream& output )
+{
+    if (id_origem != id_destino)
+    {
+        Vertice *origem = vertices->busca(id_origem);
+
+        Vertice *destino = vertices->busca(id_destino);
+
+        //primeiro inicializar um vetor com os vertices
+        //vai armazenar o menor caminho para chegar a todos os vertices
+        vet* noCaminho = new vet[ordem];
+
+        noCaminho[0] = 0;
+
+        for (int i = 1; i < ordem; i++)
+        {
+            noCaminho[i] = INT_MAX;
+        }
+        float caminhoTam = 0;
+
+        for (int i = 0; i < verticesAdjacentes; i++)
+            if (caminhoTam + arestaAdjacente.peso < verticeAdj.tempoArmazenado ) {
+                verticeAdj.tempoArmazenado = caminhoTam + arestaAdjacente.peso;
+                verticeAdj.ultimoVertice = verticeAtual;
+            }
+
+
+        2. Ir para o vertice adjacente não explorado de menor tempo
+
+        verticeAtual = verticeAdjMenorTempo
+
+        VerticeAtual.explorado = true
+                }
 }
