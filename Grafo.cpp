@@ -144,7 +144,7 @@ float dijkstra(int id_origem ,int id_destino , ofstream& output )
         Vertice *origem = vertices->busca(id_origem);
 
         Vertice *destino = vertices->busca(id_destino);
-
+    //teste
         //primeiro inicializar um vetor com os vertices
         //vai armazenar o menor caminho para chegar a todos os vertices
         vet* noCaminho = new vet[ordem];
