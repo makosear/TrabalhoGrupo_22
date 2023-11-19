@@ -27,43 +27,59 @@ using namespace std;
 
 class Grafo
 {
-	private:
-		int ordem;
-		bool eh_direcionado;
-		bool tem_peso_aresta;
-		bool tem_peso_vertice;
-		///lista de vertices
-        TabelaHash *vertices;
+private:
+    int ordem;
+    bool eh_direcionado;
+    bool tem_peso_aresta;
+    bool tem_peso_vertice;
+    ///lista de vertices
+    TabelaHash *vertices;
 
-	public:
-		Grafo(int ehOrdenado , int temDirecao , int temPesoAresta , int temPesoVertice);
-		~Grafo();
+public:
+    Grafo(int ehOrdenado, int temDirecao, int temPesoAresta, int temPesoVertice);
+    ~Grafo();
 
-		///getters imediatos
-		int getOrdem() { return this->ordem; };
-		bool direcionado() { return eh_direcionado;};
-		bool temPesoAresta() { return tem_peso_aresta;};
-		bool temPesoVertice() { return tem_peso_vertice;};
+    ///getters imediatos
+    int getOrdem()
+    {
+        return this->ordem;
+    };
+    bool direcionado()
+    {
+        return eh_direcionado;
+    };
+    bool temPesoAresta()
+    {
+        return tem_peso_aresta;
+    };
+    bool temPesoVertice()
+    {
+        return tem_peso_vertice;
+    };
 
-		///manipulacao da lista de vertices
-		bool insereVertice(int id_origem ,float peso);
-		void removeVertice(int id_origem);
-		bool insereAresta(int id_origem , int id_destino , float peso);
-		void removeAresta(int id_origem , int id_destino);
+    ///manipulacao da lista de vertices
+    bool insereVertice(int id_origem,float peso);
+    void removeVertice(int id_origem);
+    bool insereAresta(int id_origem, int id_destino, float peso = 1,  bool ehRetorno = false);
+    void removeAresta(int id_origem, int id_destino);
 
-		Grafo* buscaEmLargura(int id);
-		/*
-		float dijkstra(int id_origem ,int id_destino , ofstream& output );
-		float floyd(int origem , int destino , ofstream& output);
-		Grafo* SGVI_feixoTransitivoDireto(int id_origem , ofstream& output);
-		Grafo* SGVI_feixoTransitivoIndireto(int id_origem , ofstream& output);
-		Grafo* buscaEmProfundidade(int id , ofstream& output);
-		void ordenacaoTopologica(ofstream& output);
-		Grafo* agmPrim(ofstream& output);
-		Grafo* agmKruskal(ofstream& output);
-		*/
+    Grafo* buscaEmLargura(int id);
 
-		void imprimirGraphviz(string nome);
+
+    bool aux(Grafo* resultado, TabelaHash* visitados, Vertice*  atual);
+    Grafo* SGVI_feixoTransitivoIndireto(int id_origem, ofstream& output);
+
+    /*
+    float dijkstra(int id_origem ,int id_destino , ofstream& output );
+    float floyd(int origem , int destino , ofstream& output);
+    Grafo* SGVI_feixoTransitivoDireto(int id_origem , ofstream& output);
+    Grafo* buscaEmProfundidade(int id , ofstream& output);
+    void ordenacaoTopologica(ofstream& output);
+    Grafo* agmPrim(ofstream& output);
+    Grafo* agmKruskal(ofstream& output);
+    */
+
+    void imprimirGraphviz(string nome);
 
 };
 

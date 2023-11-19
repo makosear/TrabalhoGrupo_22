@@ -13,47 +13,51 @@ ListaArestas::~ListaArestas()
     tamanho = 0;
     fim = nullptr;
     inicio = nullptr;
+
+
 }
 ListaArestas *ListaArestas::insereInicio(Aresta *item)
 {
+    if(item == nullptr) return this;
+    Aresta* novoItem = new Aresta(item);
+
+
     // se lista vazia
     if (this->inicio == nullptr && this->fim == nullptr)
     {
-        inicio = fim = item;
-        item->proximo = nullptr;
-        item->anterior = nullptr;
+        inicio = fim = novoItem;
+        novoItem->proximo = nullptr;
+        novoItem->anterior = nullptr;
     }
     else
     {
-        item->proximo = inicio;
-        item->anterior = nullptr;
-        inicio->anterior = item;
-        this->inicio = item;
+        novoItem->proximo = inicio;
+        novoItem->anterior = nullptr;
+        inicio->anterior = novoItem;
+        this->inicio = novoItem;
     }
-    //imprimeLista();
-    //system("pause");
     tamanho++;
     return this;
 }
 ListaArestas *ListaArestas::insereFinal(Aresta *item)
 {
+    if(item == nullptr) return this;
+    Aresta* novoItem = new Aresta(item);
+
     // se lista vazia
     if (this->inicio == nullptr && this->fim == nullptr)
     {
-        inicio = fim = item;
-        item->proximo = nullptr;
-        item->anterior = nullptr;
+        inicio = fim = novoItem;
+        novoItem->proximo = nullptr;
+        novoItem->anterior = nullptr;
     }
     else
     {
-        item->anterior = fim;
-        item->proximo = nullptr;
-        fim->proximo = item;
-        fim = item;
+        novoItem->anterior = fim;
+        novoItem->proximo = nullptr;
+        fim->proximo = novoItem;
+        fim = novoItem;
     }
-
-    //imprimeLista();
-    //system("pause");
     tamanho++;
 
     return this;
@@ -99,7 +103,7 @@ Aresta *ListaArestas::busca(int id)
 
     while (iteracaoAtual != nullptr)
     {
-        if (iteracaoAtual->comparaId(id))
+        if (iteracaoAtual->getDestino()->getId() == id)
         {
             return iteracaoAtual;
         }
@@ -158,7 +162,8 @@ void ListaArestas::limpaLista()
     inicio = fim = nullptr;
 }
 
-void ListaArestas::imprimeLista(){
+void ListaArestas::imprimeLista()
+{
 
     Aresta* it = inicio;
 

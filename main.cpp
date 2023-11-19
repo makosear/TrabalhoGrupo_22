@@ -131,9 +131,11 @@ void escolhasAlgoritimos(Grafo *g, ofstream &output)
             cout << "[SUBGRAFO VERTICE INDUZIDO POR FEIXO TRANSITIVO INDIRETO]" << endl;
             cout << "infome o id de busca" << endl;
             cin >> id_o;
-            //saida = g->SGVI_feixoTransitivoIndireto(id_o, output);
-            // cout << "[TESTE]" << endl << endl;
-            // saida->TESTE_imprimeGrafo();
+
+            saida = g->SGVI_feixoTransitivoIndireto(id_o, output);
+
+            //cout << "[TESTE]" << endl << endl;
+            //saida->TESTE_imprimeGrafo();
 
             break;
         case 3:
@@ -213,6 +215,7 @@ Grafo *leituraPorAraquivo(ifstream &input_file, int directed, int weightedEdge, 
     {
         while (input_file >> id_o >> peso_vertice_o >> id_d >> peso_vertice_d >> peso_aresta)
         {
+            cout << "salve 2" << endl;
             g->insereVertice(id_o, peso_vertice_o);
             cout << "inserendo vertice " << id_o << "de peso " << peso_vertice_o << endl;
             g->insereVertice(id_d, peso_vertice_d);
@@ -225,10 +228,11 @@ Grafo *leituraPorAraquivo(ifstream &input_file, int directed, int weightedEdge, 
     {
         while (input_file >> id_o >> id_d >> peso_aresta)
         {
+             cout << "salve 3" << endl;
             g->insereVertice(id_o, peso_vertice_o);
-            cout << "inserendo vertice " << id_o << "de peso " << peso_vertice_o << endl;
+            cout << "inserendo vertice " << id_o << " de peso " << peso_vertice_o << endl;
             g->insereVertice(id_d, peso_vertice_d);
-            cout << "inserendo vertice " << id_d << "de peso " << peso_vertice_d << endl;
+            cout << "inserendo vertice " << id_d << " de peso " << peso_vertice_d << endl;
             g->insereAresta(id_o, id_d, peso_aresta);
             cout << "inserindo arestas entre " << id_o << " e " << id_d << " de peso " << peso_aresta << endl;
         }
@@ -237,10 +241,11 @@ Grafo *leituraPorAraquivo(ifstream &input_file, int directed, int weightedEdge, 
     {
         while (input_file >> id_o >> peso_vertice_o >> id_d >> peso_vertice_d)
         {
+             cout << "salve 4" << endl;
             g->insereVertice(id_o, peso_vertice_o);
-            cout << "inserendo vertice " << id_o << "de peso " << peso_vertice_o << endl;
+            cout << "inserendo vertice " << id_o << " de peso " << peso_vertice_o << endl;
             g->insereVertice(id_d, peso_vertice_d);
-            cout << "inserendo vertice " << id_d << "de peso " << peso_vertice_d << endl;
+            cout << "inserendo vertice " << id_d << " de peso " << peso_vertice_d << endl;
             g->insereAresta(id_o, id_d, peso_aresta);
             cout << "inserindo arestas entre " << id_o << " e " << id_d << " de peso " << peso_aresta << endl;
         }
@@ -249,10 +254,11 @@ Grafo *leituraPorAraquivo(ifstream &input_file, int directed, int weightedEdge, 
     {
         while (input_file >> id_o >> id_d)
         {
+            cout << "salve" << endl;
             g->insereVertice(id_o, peso_vertice_o);
-            cout << "inserendo vertice " << id_o << "de peso " << peso_vertice_o << endl;
+            cout << "inserendo vertice " << id_o << " de peso " << peso_vertice_o << endl;
             g->insereVertice(id_d, peso_vertice_d);
-            cout << "inserendo vertice " << id_d << "de peso " << peso_vertice_d << endl;
+            cout << "inserendo vertice " << id_d << " de peso " << peso_vertice_d << endl;
             g->insereAresta(id_o, id_d, peso_aresta);
             cout << "inserindo arestas entre " << id_o << " e " << id_d << " de peso " << peso_aresta << endl;
         }
@@ -265,10 +271,10 @@ int main()
     ifstream input;
     ofstream output_file;
     output_file.open("TESTEOut", ios::out | ios::trunc);
-    input.open("grafo_125.txt", ios::in);
+    input.open("grafo_teste.txt", ios::in);
     if(input.is_open())
     {
-        Grafo * xd = leituraPorAraquivo(input, 0, 1, 0);
+        Grafo * xd = leituraPorAraquivo(input, 1, 0, 0);
         escolhasAlgoritimos(xd , output_file);
     }
     input.close();

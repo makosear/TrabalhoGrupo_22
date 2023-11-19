@@ -50,31 +50,29 @@ void Grafo::removeVertice(int id_origem)
 
 
 }
-bool Grafo::insereAresta(int id_origem, int id_destino, float peso = 1)
+bool Grafo::insereAresta(int id_origem, int id_destino, float peso, bool ehRetorno)
 {
+    //cout << "inserindo aresta origem: " << id_origem << " destino " << id_destino << endl;
     Vertice *origem = vertices->busca(id_origem);
     Vertice *destino = vertices->busca(id_destino);
 
     if(origem != nullptr && destino != nullptr)
     {
         peso = this->tem_peso_aresta ? peso : 1;
-        origem->insereAresta(destino, peso);
+        origem->insereAresta(destino, peso, ehRetorno);
         origem->incSaida();
 
         if (!this->eh_direcionado)
         {
-            destino->insereAresta(origem, peso);
+            destino->insereAresta(origem, peso, ehRetorno);
             destino->incEntrada();
         }
-
         return true;
     }
-
     return false;
 }
 void Grafo::removeAresta(int id_origem, int id_destino)
 {
-
     Vertice *origem = vertices->busca(id_origem);
     Vertice *destino = vertices->busca(id_destino);
 
@@ -104,7 +102,7 @@ void Grafo::imprimirGraphviz(string nome)
         if (this->direcionado())
         {
             /// inserindo no output um grafo direcionado
-            output << "digraph teste{" << endl;
+            output << "digraph " << nome <<" {" << endl;
             conector = " -> ";
             cout << "Grafo direcionado " << endl;
         }
@@ -112,16 +110,16 @@ void Grafo::imprimirGraphviz(string nome)
         {
             /// inserindo no output um grafo n�o direcionado
             output << "graph " << nome << " {" << endl;
-            conector = " -- ";
+            conector = " -> ";
             cout << "Grafo não direcionado " << endl;
         }
+
         ListaArestas *lista;
         vertices->iterator = vertices->iteratorInicio();
         while (vertices->iterator != nullptr)
         {
             lista = vertices->iterator->getArestas();
             lista->iterator = lista->iteratorInicio();
-
             if(lista->iterator == nullptr)
             {
                 output << vertices->iterator->getId() << endl;
@@ -131,7 +129,11 @@ void Grafo::imprimirGraphviz(string nome)
                 while (lista->iterator != nullptr)
                 {
                     Aresta *a = lista->iterator;
-                    output << vertices->iterator->getId() << conector << a->getDestino()->getId() << endl;
+                    output << vertices->iterator->getId() << conector << a->getDestino()->getId();
+
+                    if(a->ehArestaRetorno()) output << " [ color=\"red\" ]";
+
+                    output << endl;
                     lista->proximo();
                 }
             }
@@ -149,8 +151,6 @@ void Grafo::imprimirGraphviz(string nome)
     command = command.append(nome + ".png");
 
     cout << command << endl;
-    system("pause");
-
     system(command.data());
     system("pause");
 }
@@ -175,15 +175,123 @@ Grafo* Grafo::buscaEmLargura(int id)
         {
             if(resultado->insereVertice(arestas->iterator->getDestino()->getId()))
             {
-                resultado->insereAresta( atual->getId() ,arestas->iterator->getDestino()->getId(), 1);
-                cout << "Destino " << arestas->iterator->getDestino()->getId() << endl;
+                resultado->insereAresta(atual->getId(),arestas->iterator->getDestino()->getId(), 1, false);
                 pilhaVertices->insereInicio(arestas->iterator->getDestino());
+            }
+            else if(!arestas->iterator->getDestino()->comparaId(atual->getId()))
+            {
+                //resultado->insereAresta(atual->getId(),arestas->iterator->getDestino()->getId(), 1, true);
             }
             arestas->proximo();
         }
     }
-
-    system("pause");
     resultado->imprimirGraphviz("buscaEmLargura");
+    return resultado;
+}
+
+
+bool Grafo::aux(Grafo* resultado, TabelaHash* visitados, Vertice*  inicio)
+{
+    ListaVertices* pilhaDeVertices = new ListaVertices();
+    ListaVertices* caminho = new ListaVertices();
+    pilhaDeVertices->insereInicio(inicio);
+
+    //cout << "aux inicio " << inicio->getId() << endl;
+    //system("pause");
+
+    while(!pilhaDeVertices->ehVazia())
+    {
+        Vertice* atual= pilhaDeVertices->desempilhaPrimeiro();
+        //atual->imprime();
+        caminho->insereInicio(atual);
+        ///se existe na solução atual
+        if(resultado->vertices->busca(atual->getId()) != nullptr)
+        {
+            cout << "adicione todo o caminho ah solução e retorna" << endl;
+            ///adicione todo o caminho ah solução e retorna
+            Vertice* destino = caminho->desempilhaPrimeiro();
+            caminho->imprimeLista();
+            system("pause");
+            while(!caminho->ehVazia())
+            {
+                Vertice* origem = caminho->desempilhaPrimeiro();
+                Aresta *a = origem->buscaAresta(destino->getId());
+                resultado->insereVertice(origem->getId());
+                resultado->insereAresta(origem->getId(), destino->getId(), 1, false);
+                destino = origem;
+            }
+            visitados->insere(atual->getId(), atual);
+
+            delete caminho;
+            delete pilhaDeVertices;
+            return true;
+
+        }
+        else if(atual->getArestas()->ehVazia() || (visitados->busca(atual->getId()) != nullptr))
+        {
+            ///desempilha do caminho pois chegamos a um fim
+            cout << "desempilha do caminho pois chegamos a um fim" << endl;
+            caminho->desempilhaPrimeiro();
+        }
+        else
+        {
+            ///poe todas as adjacencias na pilha de execução
+            cout << "poe todas as adjacencias na pilha de execução" << endl;
+            cout << "Adjacencias" << endl;
+            atual->getArestas()->iterator = atual->getArestas()->iteratorInicio();
+
+            while(atual->getArestas()->iterator != nullptr)
+            {
+                Vertice* verticeDestino = atual->getArestas()->iterator->getDestino();
+                bool naoVisitadoOuSolucao = visitados->busca(verticeDestino->getId()) == nullptr ||
+                     resultado->vertices->busca(verticeDestino->getId()) != nullptr;
+
+                if( naoVisitadoOuSolucao && pilhaDeVertices->busca(atual->getArestas()->iterator->getDestino()->getId()) == nullptr)
+                {
+                    cout <<"inserindo" << endl;
+                    atual->getArestas()->iterator->getDestino()->imprime();
+                    pilhaDeVertices->insereInicio(atual->getArestas()->iterator->getDestino());
+                }
+                atual->getArestas()->proximo();
+            }
+        }
+
+        visitados->insere(atual->getId(), atual);
+        pilhaDeVertices->imprimeLista();
+    }
+
+    delete caminho;
+    delete pilhaDeVertices;
+    return false;
+}
+
+Grafo* Grafo::SGVI_feixoTransitivoIndireto(int id_origem, ofstream& output)
+{
+    int index = 0;
+
+    Grafo* resultado = new Grafo(0,1,0,0);
+    Vertice* verticeInicio = this->vertices->busca(id_origem);
+    TabelaHash* visitados = new TabelaHash(2);
+
+    if(verticeInicio == nullptr) return nullptr;
+
+    resultado->insereVertice(verticeInicio->getId(), verticeInicio->getPeso());
+
+    ///iterando todos os vertices do grafo atual
+    this->vertices->iterator = this->vertices->iteratorInicio();
+    while(this->vertices->iterator != nullptr)
+    {
+        aux(resultado, visitados ,this->vertices->iterator);
+        //stringstream ss;
+        //ss << index;
+        //string str = ss.str();
+        //std::string nome = "fecho_";
+        //nome.append(str);
+        //resultado->imprimirGraphviz(nome);
+        this->vertices->proximo();
+        index++;
+    }
+
+    resultado->imprimirGraphviz("fechoTransitivoIndireto");
     return resultado;
 }

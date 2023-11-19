@@ -11,6 +11,8 @@ class Aresta
 private:
     float peso;
     int destino_id;
+    bool ehRetorno;
+
     Vertice *destino;
 
 public:
@@ -22,18 +24,31 @@ public:
     {
         peso = 1;
         destino = nullptr;
+        ehRetorno = false;
     };
 
-    Aresta(float peso, Vertice *destino, int destinoId)
+    Aresta(Aresta* copia)
     {
-        this->peso = peso;
-        this->destino = destino;
-        this->destino_id = destinoId;
+        peso = copia->peso;
+        destino = copia->destino;
+        ehRetorno = copia->ehRetorno;
         this->proximo = nullptr;
         this->anterior = nullptr;
     };
 
-    ~Aresta() { destino = nullptr; };
+
+    Aresta(float peso, Vertice *destino)
+    {
+        this->peso = peso;
+        this->destino = destino;
+        this->proximo = nullptr;
+        this->anterior = nullptr;
+    };
+
+    ~Aresta()
+    {
+        destino = nullptr;
+    };
 
     bool compara(Aresta *item)
     {
@@ -47,8 +62,19 @@ public:
         return false;
     }
 
-    float getPeso() { return peso; };
-    Vertice *getDestino() { return destino; };
+    bool ehArestaRetorno()
+    {
+        return ehRetorno;
+    }
+
+    float getPeso()
+    {
+        return peso;
+    };
+    Vertice *getDestino()
+    {
+        return destino;
+    };
 
     // O return this permite encadear metodos do mesmo objeto
     // por exemplo fazer aresta.setPeso().setDestino()
@@ -62,6 +88,11 @@ public:
     {
         this->destino = destino;
         return this;
+    };
+
+    void setEhRetorno(bool retorno)
+    {
+        this->ehRetorno = retorno;
     };
 };
 
