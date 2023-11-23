@@ -18,6 +18,7 @@ bool Grafo::insereVertice(int id_origem, float peso = 1)
     if (vertices->busca(id_origem) == nullptr)
     {
         vertices->insere(id_origem, new Vertice(id_origem, peso));
+        ordem++;
     }
     else
     {
@@ -139,35 +140,101 @@ void Grafo::imprimirGraphviz()
 
 float dijkstra(int id_origem ,int id_destino , ofstream& output )
 {
-    if (id_origem != id_destino)
-    {
-        Vertice *origem = vertices->busca(id_origem);
+    if (id_origem != id_destino) {
+        Vertice *vertAtual = vertices->busca(id_origem);
 
-        Vertice *destino = vertices->busca(id_destino);
-    //teste
+        if (vertAtual == nullptr || vertices->busca(id_destino) == nullptr){
+            cout << "Vertice nao existe" << endl;
+            return -1;
+        }
+
         //primeiro inicializar um vetor com os vertices
         //vai armazenar o menor caminho para chegar a todos os vertices
-        vet* noCaminho = new vet[ordem];
 
-        noCaminho[0] = 0;
+        float *distancia = new float[ordem];
 
-        for (int i = 1; i < ordem; i++)
-        {
-            noCaminho[i] = INT_MAX;
+        //distancia minima da origem para um vertice
+
+        int *visitado = new int[ordem]; //marca se um vertice foi visitado
+
+        int *vertAdj = new int[ordem];
+        //marca os vertices adjacentes
+
+        for (int i = 0; i < ordem; i++) {
+            distancia[i] = FLT_MAX;
+
+            vertAdj[i] = -1;
+
+            visitado[i] = -1;
         }
-        float caminhoTam = 0;
 
-        for (int i = 0; i < verticesAdjacentes; i++)
-            if (caminhoTam + arestaAdjacente.peso < verticeAdj.tempoArmazenado ) {
-                verticeAdj.tempoArmazenado = caminhoTam + arestaAdjacente.peso;
-                verticeAdj.ultimoVertice = verticeAtual;
+        distancia[vertAtual->getId()] = 0;
+
+        ListaArestas *arestasNoAtual;
+
+        float caminhoTam; // peso do caminho atual
+
+        while (vertAtual->getId() != id_destino) {
+
+            for (int i = 0; i < ordem; i++)
+            {
+                vertAdj[i] = -1;
             }
 
+            caminhoTam = distancia[vertAtual->getId()];
 
-        2. Ir para o vertice adjacente não explorado de menor tempo
+            visitado[vertAtual->getId()] = 1;
 
-        verticeAtual = verticeAdjMenorTempo
+            arestasNoAtual = vertAtual->getArestas();
 
-        VerticeAtual.explorado = true
+            arestasNoAtual->iterator = arestasNoAtual->iteratorInicio();
+
+            while (arestasNoAtual->iterator != nullptr) {
+                Aresta *a = arestasNoAtual->iterator;
+
+                int idVertAdj = a->getDestino()->getId();
+
+                vertAdj[idVertAdj] = 1;
+
+                if (distancia[idVertAdj] > caminhoTam + a->getPeso()) {
+
+                    distancia[idVertAdj] = caminhoTam + a->getPeso();
+
                 }
+
+                arestasNoAtual->proximo();
+
+                int proxCaminho = INT_MAX;
+
+                int proxID = -1;
+
+                for (int i = 0; i < ordem; i++) {
+                    if (vertAdj[i] == 1) {
+                        if (distancia[i] < proxCaminho && visitado[i] != 1) {
+                            proxCaminho = distancia[i];
+                            proxID = i;
+                        }
+                    }
+                }
+
+                vertAtual = vertices->busca(proxID);
+
+            }
+        }
+        caminhoTam = distancia[vertAtual->getId()];
+
+        delete []distancia;
+
+        delete []visitado;
+
+        delete []vertAdj;
+
+        return caminhoTam;
+    }
+    else
+    {
+        //nenhum caminho se a origem == destino
+        return 0;
+
+    }
 }

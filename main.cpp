@@ -317,7 +317,7 @@ int main(int argc, char const *argv[])
     //Abrindo arquivo de entrada
     ifstream input_file;
     ofstream output_file;
-    input_file.open("teste", ios::in);
+    input_file.open("grafo_125.txt", ios::in);
     output_file.open("TESTEOut", ios::out | ios::trunc);
 
     Grafo *grafo = new Grafo(1, 0, 0, 0);

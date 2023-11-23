@@ -28,7 +28,7 @@ using namespace std;
 class Grafo
 {
 	private:
-		int ordem;
+		int ordem = 0;
 		bool eh_direcionado;
 		bool tem_peso_aresta;
 		bool tem_peso_vertice;
