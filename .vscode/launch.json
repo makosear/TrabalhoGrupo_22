@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/hugo_/OneDrive/Área de Trabalho/Grafo/TrabalhoGrupo_22",
-      "program": "c:/Users/hugo_/OneDrive/Área de Trabalho/Grafo/TrabalhoGrupo_22/build/Debug/outDebug",
+      "cwd": "c:/Projetos/Faculdade/Grafo/TrabalhoGrupo_22",
+      "program": "c:/Projetos/Faculdade/Grafo/TrabalhoGrupo_22/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

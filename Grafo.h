@@ -79,19 +79,6 @@ public:
     */
 
 
-    bool aux(Grafo* resultado, TabelaHash* visitados, Vertice*  atual);
-    Grafo* SGVI_feixoTransitivoIndireto(int id_origem, ofstream& output);
-
-    /*
-    float dijkstra(int id_origem ,int id_destino , ofstream& output );
-    float floyd(int origem , int destino , ofstream& output);
-    Grafo* SGVI_feixoTransitivoDireto(int id_origem , ofstream& output);
-    Grafo* buscaEmProfundidade(int id , ofstream& output);
-    void ordenacaoTopologica(ofstream& output);
-    Grafo* agmPrim(ofstream& output);
-    Grafo* agmKruskal(ofstream& output);
-    */
-
     void imprimirGraphviz(string nome);
 
 };

@@ -330,9 +330,11 @@ int main()
 //    return 0;
 //}
 
+/*
 int main(int argc, char const *argv[])
 {
-    /*
+
+
         //Verifica��o se todos os par�metros do programa foram entrados
         if (argc != 6) {
 
@@ -365,7 +367,7 @@ int main(int argc, char const *argv[])
         }else
             cout << "Unable to open " << argv[1];
 
-    */
+
 
     //Abrindo arquivo de entrada
     ifstream input_file;
@@ -378,4 +380,7 @@ int main(int argc, char const *argv[])
 
     return 0;
 }
+
+*/
+
 
