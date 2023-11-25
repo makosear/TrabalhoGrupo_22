@@ -24,10 +24,14 @@ class Aresta;
 class Vertice
 {
 private:
+
 	int id;
 	int grauEntrada;
 	int grauSaida;
 	float peso;
+	bool visitado;
+
+
 	ListaArestas *arestas;
 
 public:
@@ -36,20 +40,24 @@ public:
     Vertice *anterior;
 
 	Vertice(int novoId, float novoPeso);
+	Vertice(Vertice* copia);
 	~Vertice();
 
 	int getId() { return this->id; };
 	int getGrauSaida() { return this->grauSaida; };
 	int getGrauEntrada() { return this->grauEntrada; };
 	float getPeso() { return this->peso; };
+	bool ehVisitado() { return visitado; };
 
+
+	void setVisitado(bool valor) { this->visitado = valor; };
 	void incSaida() { grauSaida++; };
 	void incEntrada() { grauEntrada++; };
 	void decSaida() { grauSaida--; };
 	void decEntrada() { grauEntrada--; };
 	void setPeso(float p) { this->peso = p; };
 
-	Vertice *insereAresta(Vertice *destino, float peso);
+	Vertice *insereAresta(Vertice *destino, float peso , bool ehRetorno = false);
 	Vertice *removeAresta(int destino_id);
 	//Vertice *removeAresta(Vertice *destino);
 	Vertice *removeTodasArestas(bool ehOrdenado);
@@ -57,6 +65,8 @@ public:
 	//Aresta *buscaAresta(Vertice *destino);
 
 	ListaArestas* getArestas(){ return this->arestas;};
+
+	void imprime();
 
 	bool compara(Vertice *item)
 	{

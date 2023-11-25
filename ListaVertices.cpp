@@ -19,47 +19,48 @@ ListaVertices::~ListaVertices()
 }
 ListaVertices *ListaVertices::insereInicio(Vertice *item)
 {
+    if(item == nullptr) return this;
+    Vertice* novoItem = new Vertice(item);
+
     // se lista vazia
     if (this->inicio == nullptr && this->fim == nullptr)
     {
-        inicio = fim = item;
-        item->proximo = nullptr;
-        item->anterior = nullptr;
+        inicio = fim = novoItem;
+        novoItem->proximo = nullptr;
+        novoItem->anterior = nullptr;
     }
     else
     {
-        item->proximo = inicio;
-        item->anterior = nullptr;
-        inicio->anterior = item;
-        this->inicio = item;
+        novoItem->proximo = inicio;
+        novoItem->anterior = nullptr;
+        inicio->anterior = novoItem;
+        this->inicio = novoItem;
     }
 
     tamanho++;
 }
 ListaVertices *ListaVertices::insereFinal(Vertice *item)
 {
+    if(item == nullptr) return this;
+    Vertice* novoItem = new Vertice(item);
 
 
     // se lista vazia
     if (this->inicio == nullptr && this->fim == nullptr)
     {
-        inicio = fim = item;
-        item->proximo = nullptr;
-        item->anterior = nullptr;
+        inicio = fim = novoItem;
+        novoItem->proximo = nullptr;
+        novoItem->anterior = nullptr;
     }
     else
     {
-        item->anterior = fim;
-        item->proximo = nullptr;
-        fim->proximo = item;
-        fim = item;
+        novoItem->anterior = fim;
+        novoItem->proximo = nullptr;
+        fim->proximo = novoItem;
+        fim = novoItem;
     }
 
     tamanho++;
-
-    //imprimeLista();
-    //system("pause");
-
     return this;
 }
 
@@ -90,41 +91,16 @@ ListaVertices *ListaVertices::deleta(int id)
 {
     Vertice *busca = this->busca(id);
 
-    if (busca != nullptr){
-
-        deleteAuxiliar(busca);
-    }
-
-    tamanho--;
-    return this;
-}
-/*
-ListaArestas *ListaArestas::deleta(Vertice *item)
-{
-    Aresta *busca = this->busca(item);
     if (busca != nullptr)
+    {
+
         deleteAuxiliar(busca);
+    }
 
     tamanho--;
     return this;
 }
-*/
-/*
-Aresta *ListaArestas::busca(Vertice *item)
-{
-    Aresta *iteracaoAtual = inicio;
 
-    while (iteracaoAtual != nullptr)
-    {
-        if (item->compara(iteracaoAtual))
-        {
-            return iteracaoAtual;
-        }
-        iteracaoAtual = iteracaoAtual->proximo;
-    }
-    return nullptr;
-}
-*/
 Vertice *ListaVertices::busca(int id)
 {
     Vertice *iteracaoAtual = inicio;
@@ -209,8 +185,28 @@ void ListaVertices::imprimeLista()
 
         it = it->proximo;
     }
-
     cout << endl;
+}
 
+Vertice* ListaVertices::desempilhaPrimeiro()
+{
+    if(this->ehVazia()) return nullptr;
+
+    Vertice* retorno = inicio;
+    inicio=inicio->proximo;
+
+    if (inicio != nullptr)
+    {
+        inicio->anterior = nullptr;
+    }
+    else
+    {
+        fim = nullptr;
+    }
+
+    tamanho--;
+    retorno->proximo = retorno->anterior = nullptr;
+
+    return retorno;
 }
 

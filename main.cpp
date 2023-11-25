@@ -131,9 +131,11 @@ void escolhasAlgoritimos(Grafo *g, ofstream &output)
             cout << "[SUBGRAFO VERTICE INDUZIDO POR FEIXO TRANSITIVO INDIRETO]" << endl;
             cout << "infome o id de busca" << endl;
             cin >> id_o;
-            //saida = g->SGVI_feixoTransitivoIndireto(id_o, output);
-            // cout << "[TESTE]" << endl << endl;
-            // saida->TESTE_imprimeGrafo();
+
+            saida = g->SGVI_feixoTransitivoIndireto(id_o, output);
+
+            //cout << "[TESTE]" << endl << endl;
+            //saida->TESTE_imprimeGrafo();
 
             break;
         case 3:
@@ -167,20 +169,18 @@ void escolhasAlgoritimos(Grafo *g, ofstream &output)
             cout << "[BUSCA EM LARGURA]" << endl;
             cout << "infome o id de inicio" << endl;
             cin >> id_o;
-            //saida = g->buscaEmLargura(id_o, output);
-            // g->buscaEmProfundidade(1);
-            g->imprimirGraphviz();
+            saida = g->buscaEmLargura(id_o);
             break;
         case 8:
             cout << "[ORDENA��O TOPOLOGICA]" << endl;
             cout << "infome o id de inicio" << endl;
             cin >> id_o;
-            g->imprimirGraphviz();
+
             break;
 
         case 10:
             cout << "[Impressão Graphviz]" << endl;
-            g->imprimirGraphviz();
+            g->imprimirGraphviz("grafo");
             break;
 
         case 9:
@@ -215,6 +215,7 @@ Grafo *leituraPorAraquivo(ifstream &input_file, int directed, int weightedEdge, 
     {
         while (input_file >> id_o >> peso_vertice_o >> id_d >> peso_vertice_d >> peso_aresta)
         {
+            cout << "salve 2" << endl;
             g->insereVertice(id_o, peso_vertice_o);
             cout << "inserendo vertice " << id_o << "de peso " << peso_vertice_o << endl;
             g->insereVertice(id_d, peso_vertice_d);
@@ -227,10 +228,11 @@ Grafo *leituraPorAraquivo(ifstream &input_file, int directed, int weightedEdge, 
     {
         while (input_file >> id_o >> id_d >> peso_aresta)
         {
+             cout << "salve 3" << endl;
             g->insereVertice(id_o, peso_vertice_o);
-            cout << "inserendo vertice " << id_o << "de peso " << peso_vertice_o << endl;
+            cout << "inserendo vertice " << id_o << " de peso " << peso_vertice_o << endl;
             g->insereVertice(id_d, peso_vertice_d);
-            cout << "inserendo vertice " << id_d << "de peso " << peso_vertice_d << endl;
+            cout << "inserendo vertice " << id_d << " de peso " << peso_vertice_d << endl;
             g->insereAresta(id_o, id_d, peso_aresta);
             cout << "inserindo arestas entre " << id_o << " e " << id_d << " de peso " << peso_aresta << endl;
         }
@@ -239,10 +241,11 @@ Grafo *leituraPorAraquivo(ifstream &input_file, int directed, int weightedEdge, 
     {
         while (input_file >> id_o >> peso_vertice_o >> id_d >> peso_vertice_d)
         {
+             cout << "salve 4" << endl;
             g->insereVertice(id_o, peso_vertice_o);
-            cout << "inserendo vertice " << id_o << "de peso " << peso_vertice_o << endl;
+            cout << "inserendo vertice " << id_o << " de peso " << peso_vertice_o << endl;
             g->insereVertice(id_d, peso_vertice_d);
-            cout << "inserendo vertice " << id_d << "de peso " << peso_vertice_d << endl;
+            cout << "inserendo vertice " << id_d << " de peso " << peso_vertice_d << endl;
             g->insereAresta(id_o, id_d, peso_aresta);
             cout << "inserindo arestas entre " << id_o << " e " << id_d << " de peso " << peso_aresta << endl;
         }
@@ -251,10 +254,11 @@ Grafo *leituraPorAraquivo(ifstream &input_file, int directed, int weightedEdge, 
     {
         while (input_file >> id_o >> id_d)
         {
+            cout << "salve" << endl;
             g->insereVertice(id_o, peso_vertice_o);
-            cout << "inserendo vertice " << id_o << "de peso " << peso_vertice_o << endl;
+            cout << "inserendo vertice " << id_o << " de peso " << peso_vertice_o << endl;
             g->insereVertice(id_d, peso_vertice_d);
-            cout << "inserendo vertice " << id_d << "de peso " << peso_vertice_d << endl;
+            cout << "inserendo vertice " << id_d << " de peso " << peso_vertice_d << endl;
             g->insereAresta(id_o, id_d, peso_aresta);
             cout << "inserindo arestas entre " << id_o << " e " << id_d << " de peso " << peso_aresta << endl;
         }
@@ -262,18 +266,67 @@ Grafo *leituraPorAraquivo(ifstream &input_file, int directed, int weightedEdge, 
 
     return g;
 }
-//int main()
+int main()
+{
+    ifstream input;
+    ofstream output_file;
+    output_file.open("TESTEOut", ios::out | ios::trunc);
+    input.open("grafo_teste.txt", ios::in);
+    if(input.is_open())
+    {
+        Grafo * xd = leituraPorAraquivo(input, 1, 0, 0);
+        escolhasAlgoritimos(xd , output_file);
+    }
+    input.close();
+    return 0;
+}
+
+//int main(int argc, char const *argv[])
 //{
-//    ifstream input;
+//    /*
+//        //Verifica��o se todos os par�metros do programa foram entrados
+//        if (argc != 6) {
+//
+//            cout << "ERROR: Expecting: ./<program_name> <input_file> <output_file> <directed> <weighted_edge> <weighted_node> " << endl;
+//            return 1;
+//
+//        }
+//
+//        string program_name(argv[0]);
+//        string input_file_name(argv[1]);
+//
+//        string instance;
+//        if(input_file_name.find("v") <= input_file_name.size()){
+//            string instance = input_file_name.substr(input_file_name.find("v"));
+//            cout << "Running " << program_name << " with instance " << instance << " ... " << endl;
+//        }
+//
+//        //Abrindo arquivo de entrada
+//        ifstream input_file;
+//        ofstream output_file;
+//        input_file.open(argv[1], ios::in);
+//        output_file.open(argv[2], ios::out | ios::trunc);
+//
+//        Grafo* graph;
+//
+//        if(input_file.is_open()){
+//
+//            graph = leituraPorAraquivo(input_file, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
+//
+//        }else
+//            cout << "Unable to open " << argv[1];
+//
+//    */
+//
+//    //Abrindo arquivo de entrada
+//    ifstream input_file;
 //    ofstream output_file;
+//    input_file.open("teste", ios::in);
 //    output_file.open("TESTEOut", ios::out | ios::trunc);
-//    input.open("grafo_125.txt", ios::in);
-//    if(input.is_open())
-//    {
-//        Grafo * xd = leituraPorAraquivo(input, 0, 1, 0);
-//        escolhasAlgoritimos(xd , output_file);
-//    }
-//    input.close();
+//
+//    Grafo *grafo = new Grafo(1, 0, 0, 0);
+//    escolhasAlgoritimos(grafo, output_file);
+//
 //    return 0;
 //}
 

@@ -35,10 +35,8 @@ TabelaHash::~TabelaHash()
 
 Vertice *TabelaHash::busca(int chave)
 {
-
     int indice = this->hashFunction(chave);
     ListaVertices *lista = tabela->at(indice);
-    Vertice *vertice = lista->busca(chave);
     return lista->busca(chave);
 }
 

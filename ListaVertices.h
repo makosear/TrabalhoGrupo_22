@@ -28,9 +28,9 @@ public:
 
     ListaVertices* insereInicio(Vertice *item);
     ListaVertices* insereFinal(Vertice *item);
-
     ListaVertices *deleta(int id);
     Vertice *busca(int id);
+    Vertice* desempilhaPrimeiro();
 
     void imprimeLista();
 

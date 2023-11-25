@@ -6,12 +6,38 @@ Vertice::Vertice(int novoId, float novoPeso)
     grauEntrada = 0;
     grauSaida = 0;
     peso = novoPeso;
+    visitado = false;
+
     arestas = new ListaArestas();
 
     this->proximo = nullptr;
     this->anterior = nullptr;
 
 }
+
+Vertice::Vertice(Vertice* copia)
+{
+    id = copia->id;
+    grauEntrada = copia->grauEntrada;
+    grauSaida = copia->grauEntrada;
+    peso = copia->peso;
+    visitado = copia->visitado;
+    arestas = new ListaArestas();
+
+    copia->getArestas()->iterator = copia->getArestas()->iteratorInicio();
+
+    while(copia->getArestas()->iterator != nullptr)
+    {
+
+        arestas->insereInicio(copia->getArestas()->iterator);
+        copia->getArestas()->proximo();
+    }
+
+
+    this->proximo = nullptr;
+    this->anterior = nullptr;
+}
+
 
 Vertice::~Vertice()
 {
@@ -23,21 +49,19 @@ Vertice::~Vertice()
     delete arestas;
 }
 
-Vertice *Vertice::insereAresta(Vertice *destino, float peso)
+Vertice *Vertice::insereAresta(Vertice *destino, float peso,bool ehRetorno)
 {
     if (destino == nullptr)
         return nullptr;
 
-    Aresta *novaAresta = new Aresta(peso, destino, destino->getId());
-    // essa busca obrigatoriamente é por id
-    // porque a outra busca é por endereço de memória
+    //destino->imprime();
+    Aresta *novaAresta = new Aresta(peso, destino);
+    novaAresta->setEhRetorno(ehRetorno);
 
     if (arestas->busca(novaAresta->getDestino()->getId()) == nullptr)
+    {
         arestas->insereFinal(novaAresta);
-
-    //cout << "Debug Arestas do Vertice id " << this->getId()<< endl;
-    //arestas->imprimeLista();
-    //system("pause");
+    }
 }
 Vertice *Vertice::removeAresta(int destino_id)
 {
@@ -49,5 +73,20 @@ Vertice *Vertice::removeTodasArestas(bool ehDirecionado)
 Aresta *Vertice::buscaAresta(int destino_id)
 {
     return arestas->busca(destino_id);
+}
+
+void Vertice::imprime()
+{
+
+    cout << "Vertice " << this->id << endl;
+    cout << "{ "<< endl;
+    cout << "   grauEntrada " << this->grauEntrada << endl;
+    cout << "   grauSaida " << this->grauSaida << endl;
+    cout << "   peso " << this->peso << endl;
+    cout << "   visitado " << std::boolalpha <<  this->visitado << endl;
+    cout << "   arestas " << endl;
+    this->arestas->imprimeLista();
+    cout << " }"<< endl;
+
 }
 
