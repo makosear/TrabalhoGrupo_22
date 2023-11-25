@@ -1,5 +1,8 @@
 #include "Grafo.h"
 
+#define INT_MAX 2147483640/2
+#define FLT_MAX 2147483640/2
+
 Grafo::Grafo(int ehOrdenado, int temDirecao, int temPesoAresta, int temPesoVertice)
 {
     eh_direcionado = temDirecao == 1 ? true : false;
@@ -138,7 +141,7 @@ void Grafo::imprimirGraphviz()
     system("pause");
 }
 
-float dijkstra(int id_origem ,int id_destino , ofstream& output )
+float Grafo::dijkstra(int id_origem ,int id_destino , ofstream& output )
 {
     if (id_origem != id_destino) {
         Vertice *vertAtual = vertices->busca(id_origem);
