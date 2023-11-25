@@ -330,3 +330,52 @@ int main()
 //    return 0;
 //}
 
+int main(int argc, char const *argv[])
+{
+    /*
+        //Verifica��o se todos os par�metros do programa foram entrados
+        if (argc != 6) {
+
+            cout << "ERROR: Expecting: ./<program_name> <input_file> <output_file> <directed> <weighted_edge> <weighted_node> " << endl;
+            return 1;
+
+        }
+
+        string program_name(argv[0]);
+        string input_file_name(argv[1]);
+
+        string instance;
+        if(input_file_name.find("v") <= input_file_name.size()){
+            string instance = input_file_name.substr(input_file_name.find("v"));
+            cout << "Running " << program_name << " with instance " << instance << " ... " << endl;
+        }
+
+        //Abrindo arquivo de entrada
+        ifstream input_file;
+        ofstream output_file;
+        input_file.open(argv[1], ios::in);
+        output_file.open(argv[2], ios::out | ios::trunc);
+
+        Grafo* graph;
+
+        if(input_file.is_open()){
+
+            graph = leituraPorAraquivo(input_file, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
+
+        }else
+            cout << "Unable to open " << argv[1];
+
+    */
+
+    //Abrindo arquivo de entrada
+    ifstream input_file;
+    ofstream output_file;
+    input_file.open("grafo_125.txt", ios::in);
+    output_file.open("TESTEOut", ios::out | ios::trunc);
+
+    Grafo *grafo = new Grafo(1, 0, 0, 0);
+    escolhasAlgoritimos(grafo, output_file);
+
+    return 0;
+}
+

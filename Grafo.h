@@ -27,13 +27,13 @@ using namespace std;
 
 class Grafo
 {
-private:
-    int ordem;
-    bool eh_direcionado;
-    bool tem_peso_aresta;
-    bool tem_peso_vertice;
-    ///lista de vertices
-    TabelaHash *vertices;
+	private:
+		int ordem = 0;
+		bool eh_direcionado;
+		bool tem_peso_aresta;
+		bool tem_peso_vertice;
+		///lista de vertices
+        TabelaHash *vertices;
 
 public:
     Grafo(int ehOrdenado, int temDirecao, int temPesoAresta, int temPesoVertice);

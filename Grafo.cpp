@@ -18,6 +18,7 @@ bool Grafo::insereVertice(int id_origem, float peso = 1)
     if (vertices->busca(id_origem) == nullptr)
     {
         vertices->insere(id_origem, new Vertice(id_origem, peso));
+        ordem++;
         return true;
     }
     else
@@ -294,4 +295,246 @@ Grafo* Grafo::SGVI_feixoTransitivoIndireto(int id_origem, ofstream& output)
 
     resultado->imprimirGraphviz("fechoTransitivoIndireto");
     return resultado;
+}
+
+Grafo* Grafo::buscaEmLargura(int id)
+{
+    Vertice* inicio = this->vertices->busca(id);
+    Grafo* resultado = new Grafo(0,1,0,0);
+
+    ListaVertices* pilhaVertices = new ListaVertices();
+    pilhaVertices->insereFinal(inicio);
+
+    while(!pilhaVertices->ehVazia())
+    {
+        Vertice* atual = pilhaVertices->desempilhaPrimeiro();
+        ListaArestas* arestas = atual->getArestas();
+        arestas->imprimeLista();
+        arestas->iterator = arestas->iteratorInicio();
+
+        resultado->insereVertice(atual->getId());
+        while(arestas->iterator != nullptr)
+        {
+            if(resultado->insereVertice(arestas->iterator->getDestino()->getId()))
+            {
+                resultado->insereAresta(atual->getId(),arestas->iterator->getDestino()->getId(), 1, false);
+                pilhaVertices->insereInicio(arestas->iterator->getDestino());
+            }
+            else if(!arestas->iterator->getDestino()->comparaId(atual->getId()))
+            {
+                //resultado->insereAresta(atual->getId(),arestas->iterator->getDestino()->getId(), 1, true);
+            }
+            arestas->proximo();
+        }
+    }
+    resultado->imprimirGraphviz("buscaEmLargura");
+    return resultado;
+}
+
+
+bool Grafo::aux(Grafo* resultado, TabelaHash* visitados, Vertice*  inicio)
+{
+    ListaVertices* pilhaDeVertices = new ListaVertices();
+    ListaVertices* caminho = new ListaVertices();
+    pilhaDeVertices->insereInicio(inicio);
+
+    //cout << "aux inicio " << inicio->getId() << endl;
+    //system("pause");
+
+    while(!pilhaDeVertices->ehVazia())
+    {
+        Vertice* atual= pilhaDeVertices->desempilhaPrimeiro();
+        //atual->imprime();
+        caminho->insereInicio(atual);
+        ///se existe na solução atual
+        if(resultado->vertices->busca(atual->getId()) != nullptr)
+        {
+            cout << "adicione todo o caminho ah solução e retorna" << endl;
+            ///adicione todo o caminho ah solução e retorna
+            Vertice* destino = caminho->desempilhaPrimeiro();
+            caminho->imprimeLista();
+            system("pause");
+            while(!caminho->ehVazia())
+            {
+                Vertice* origem = caminho->desempilhaPrimeiro();
+                Aresta *a = origem->buscaAresta(destino->getId());
+                resultado->insereVertice(origem->getId());
+                resultado->insereAresta(origem->getId(), destino->getId(), 1, false);
+                destino = origem;
+            }
+            visitados->insere(atual->getId(), atual);
+
+            delete caminho;
+            delete pilhaDeVertices;
+            return true;
+
+        }
+        else if(atual->getArestas()->ehVazia() || (visitados->busca(atual->getId()) != nullptr))
+        {
+            ///desempilha do caminho pois chegamos a um fim
+            cout << "desempilha do caminho pois chegamos a um fim" << endl;
+            caminho->desempilhaPrimeiro();
+        }
+        else
+        {
+            ///poe todas as adjacencias na pilha de execução
+            cout << "poe todas as adjacencias na pilha de execução" << endl;
+            cout << "Adjacencias" << endl;
+            atual->getArestas()->iterator = atual->getArestas()->iteratorInicio();
+
+            while(atual->getArestas()->iterator != nullptr)
+            {
+                Vertice* verticeDestino = atual->getArestas()->iterator->getDestino();
+                bool naoVisitadoOuSolucao = visitados->busca(verticeDestino->getId()) == nullptr ||
+                     resultado->vertices->busca(verticeDestino->getId()) != nullptr;
+
+                if( naoVisitadoOuSolucao && pilhaDeVertices->busca(atual->getArestas()->iterator->getDestino()->getId()) == nullptr)
+                {
+                    cout <<"inserindo" << endl;
+                    atual->getArestas()->iterator->getDestino()->imprime();
+                    pilhaDeVertices->insereInicio(atual->getArestas()->iterator->getDestino());
+                }
+                atual->getArestas()->proximo();
+            }
+        }
+
+        visitados->insere(atual->getId(), atual);
+        pilhaDeVertices->imprimeLista();
+    }
+
+    delete caminho;
+    delete pilhaDeVertices;
+    return false;
+}
+
+Grafo* Grafo::SGVI_feixoTransitivoIndireto(int id_origem, ofstream& output)
+{
+    int index = 0;
+
+    Grafo* resultado = new Grafo(0,1,0,0);
+    Vertice* verticeInicio = this->vertices->busca(id_origem);
+    TabelaHash* visitados = new TabelaHash(2);
+
+    if(verticeInicio == nullptr) return nullptr;
+
+    resultado->insereVertice(verticeInicio->getId(), verticeInicio->getPeso());
+
+    ///iterando todos os vertices do grafo atual
+    this->vertices->iterator = this->vertices->iteratorInicio();
+    while(this->vertices->iterator != nullptr)
+    {
+        aux(resultado, visitados ,this->vertices->iterator);
+        //stringstream ss;
+        //ss << index;
+        //string str = ss.str();
+        //std::string nome = "fecho_";
+        //nome.append(str);
+        //resultado->imprimirGraphviz(nome);
+        this->vertices->proximo();
+        index++;
+    }
+
+    resultado->imprimirGraphviz("fechoTransitivoIndireto");
+    return resultado;
+}
+
+float dijkstra(int id_origem ,int id_destino , ofstream& output )
+{
+    if (id_origem != id_destino) {
+        Vertice *vertAtual = vertices->busca(id_origem);
+
+        if (vertAtual == nullptr || vertices->busca(id_destino) == nullptr){
+            cout << "Vertice nao existe" << endl;
+            return -1;
+        }
+
+        //primeiro inicializar um vetor com os vertices
+        //vai armazenar o menor caminho para chegar a todos os vertices
+
+        float *distancia = new float[ordem];
+
+        //distancia minima da origem para um vertice
+
+        int *visitado = new int[ordem]; //marca se um vertice foi visitado
+
+        int *vertAdj = new int[ordem];
+        //marca os vertices adjacentes
+
+        for (int i = 0; i < ordem; i++) {
+            distancia[i] = FLT_MAX;
+
+            vertAdj[i] = -1;
+
+            visitado[i] = -1;
+        }
+
+        distancia[vertAtual->getId()] = 0;
+
+        ListaArestas *arestasNoAtual;
+
+        float caminhoTam; // peso do caminho atual
+
+        while (vertAtual->getId() != id_destino) {
+
+            for (int i = 0; i < ordem; i++)
+            {
+                vertAdj[i] = -1;
+            }
+
+            caminhoTam = distancia[vertAtual->getId()];
+
+            visitado[vertAtual->getId()] = 1;
+
+            arestasNoAtual = vertAtual->getArestas();
+
+            arestasNoAtual->iterator = arestasNoAtual->iteratorInicio();
+
+            while (arestasNoAtual->iterator != nullptr) {
+                Aresta *a = arestasNoAtual->iterator;
+
+                int idVertAdj = a->getDestino()->getId();
+
+                vertAdj[idVertAdj] = 1;
+
+                if (distancia[idVertAdj] > caminhoTam + a->getPeso()) {
+
+                    distancia[idVertAdj] = caminhoTam + a->getPeso();
+
+                }
+
+                arestasNoAtual->proximo();
+
+                int proxCaminho = INT_MAX;
+
+                int proxID = -1;
+
+                for (int i = 0; i < ordem; i++) {
+                    if (vertAdj[i] == 1) {
+                        if (distancia[i] < proxCaminho && visitado[i] != 1) {
+                            proxCaminho = distancia[i];
+                            proxID = i;
+                        }
+                    }
+                }
+
+                vertAtual = vertices->busca(proxID);
+
+            }
+        }
+        caminhoTam = distancia[vertAtual->getId()];
+
+        delete []distancia;
+
+        delete []visitado;
+
+        delete []vertAdj;
+
+        return caminhoTam;
+    }
+    else
+    {
+        //nenhum caminho se a origem == destino
+        return 0;
+
+    }
 }
