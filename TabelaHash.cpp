@@ -80,6 +80,25 @@ Vertice *TabelaHash::iteratorInicio()
     }
     return nullptr;
 }
+
+
+Vertice* TabelaHash::setIterator(Vertice* v){
+    // cada indice da hash
+    index_iterator = 0;
+    this->iterator = nullptr;
+    for (size_t index = 0; index < TAMANHO_LISTA; index++)
+    {
+        ListaVertices *listaVertices = tabela->at(index);
+        if(listaVertices != nullptr && listaVertices->busca(v->getId()) != nullptr)
+        {
+            index_iterator = index;
+            this->iterator = listaVertices->busca(v->getId());
+            return this->iterator;
+        }
+    }
+    return nullptr;
+}
+
 Vertice *TabelaHash::proximo()
 {
 
@@ -92,19 +111,22 @@ Vertice *TabelaHash::proximo()
     if (iterator->proximo == nullptr)
     {
         //cout << "fim da lista " << endl;
+        //cout << "index_iterator " << index_iterator << endl;
         while (index_iterator < TAMANHO_LISTA -1 )
         {
             index_iterator++;
             ListaVertices* lista = this->tabela->at(index_iterator);
+
             if(lista->iteratorInicio()!=nullptr)
             {
                 this->iterator = lista->iteratorInicio();
 
-                //cout <<"iterator id depois " << endl;
+                //cout <<"iterator id depois " << this->iterator->getId() << endl;
                 return this->iterator;
             }
         }
         iterator = iterator->proximo;
+        //cout <<"iterator id depois " << this->iterator->getId() << endl;
         return iterator;
 
     }
@@ -113,5 +135,15 @@ Vertice *TabelaHash::proximo()
         //cout << "dentro da lista " << endl;
         iterator = iterator->proximo;
         return iterator;
+    }
+}
+
+void TabelaHash::imprimeComoTabela(){
+
+    for (size_t index = 0; index < TAMANHO_LISTA; index++)
+    {
+        ListaVertices *listaVertices = tabela->at(index);
+        cout << "[" << index << "]" ;
+        listaVertices->imprimeLista();
     }
 }

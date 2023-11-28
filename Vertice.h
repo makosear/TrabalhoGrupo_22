@@ -26,6 +26,7 @@ class Vertice
 private:
 
 	int id;
+	int coordX = 0 , coordY = 0;
 	int grauEntrada;
 	int grauSaida;
 	float peso;
@@ -39,7 +40,7 @@ public:
     Vertice *proximo;
     Vertice *anterior;
 
-	Vertice(int novoId, float novoPeso);
+	Vertice(int novoId, float novoPeso , int coordX = 0 , int coordY = 0);
 	Vertice(Vertice* copia);
 	~Vertice();
 
@@ -48,6 +49,9 @@ public:
 	int getGrauEntrada() { return this->grauEntrada; };
 	float getPeso() { return this->peso; };
 	bool ehVisitado() { return visitado; };
+
+	int getX(){ return this->coordX; };
+	int getY(){	return this->coordY; };
 
 
 	void setVisitado(bool valor) { this->visitado = valor; };

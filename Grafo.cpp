@@ -16,11 +16,11 @@ Grafo::~Grafo()
     delete vertices;
 }
 
-bool Grafo::insereVertice(int id_origem, float peso = 1)
+bool Grafo::insereVertice(int id_origem, float peso = 1, int coordX, int coordY)
 {
     if (vertices->busca(id_origem) == nullptr)
     {
-        vertices->insere(id_origem, new Vertice(id_origem, peso));
+        vertices->insere(id_origem, new Vertice(id_origem, peso,coordX, coordY));
         ordem++;
         return true;
     }
@@ -93,10 +93,49 @@ void Grafo::removeAresta(int id_origem, int id_destino)
     }
 }
 
+Vertice* Grafo::getVertice(int id)
+{
+
+    return this->vertices->busca(id);
+}
+
+void Grafo::geraDistanciasDeVertices()
+{
+
+    float distancia = 0;
+
+    vertices->imprimeComoTabela();
+
+    vertices->iterator = vertices->iteratorInicio();
+    Vertice*  atual = vertices->iterator;
+    while(vertices->iterator != nullptr)
+    {
+        cout<< "atual ---" << endl;
+        atual->imprime();
+        Vertice* iteracao = vertices->iterator = vertices->iteratorInicio();
+        while(iteracao != nullptr)
+        {
+            if(atual->getId() != iteracao->getId())
+            {
+                //cout<< "    iteracao ---" << endl;
+                //iteracao->imprime();
+                distancia = sqrt(pow(iteracao->getX() - atual->getX(), 2) + pow(iteracao->getY() - atual->getY(), 2));
+                this->insereAresta(atual->getId(), iteracao->getId(), distancia, false);
+            }
+            iteracao = vertices->proximo();
+        }
+        vertices->setIterator(atual);
+        atual = vertices->proximo();
+        //system("pause");
+    }
+}
+
 void Grafo::imprimirGraphviz(string nome)
 {
     ofstream output;
     output.open(nome + ".dot");
+
+    Grafo* validacao = new Grafo(0,0,0,0);
 
     cout << "Abrindo o arquivo " << endl;
 
@@ -113,13 +152,14 @@ void Grafo::imprimirGraphviz(string nome)
         else
         {
             /// inserindo no output um grafo n�o direcionado
-            output << "graph " << nome << " {" << endl;
-            conector = " -> ";
+            output << "strict graph " << nome << " {" << endl;
+            conector = " -- ";
             cout << "Grafo não direcionado " << endl;
         }
 
         ListaArestas *lista;
         vertices->iterator = vertices->iteratorInicio();
+
         while (vertices->iterator != nullptr)
         {
             lista = vertices->iterator->getArestas();
@@ -175,7 +215,7 @@ Grafo* Grafo::SGVI_feixoTransitivoIndireto(int id_origem, ofstream& output)
     this->vertices->iterator = this->vertices->iteratorInicio();
     while(this->vertices->iterator != nullptr)
     {
-        aux(resultado, visitados ,this->vertices->iterator);
+        aux(resultado, visitados,this->vertices->iterator);
         //stringstream ss;
         //ss << index;
         //string str = ss.str();
@@ -250,7 +290,7 @@ bool Grafo::aux(Grafo* resultado, TabelaHash* visitados, Vertice*  inicio)
             while(!caminho->ehVazia())
             {
                 Vertice* origem = caminho->desempilhaPrimeiro();
-                Aresta *a = origem->buscaAresta(destino->getId());
+                //Aresta *a = origem->buscaAresta(destino->getId());
                 resultado->insereVertice(origem->getId());
                 resultado->insereAresta(origem->getId(), destino->getId(), 1, false);
                 destino = origem;
@@ -279,7 +319,7 @@ bool Grafo::aux(Grafo* resultado, TabelaHash* visitados, Vertice*  inicio)
             {
                 Vertice* verticeDestino = atual->getArestas()->iterator->getDestino();
                 bool naoVisitadoOuSolucao = visitados->busca(verticeDestino->getId()) == nullptr ||
-                     resultado->vertices->busca(verticeDestino->getId()) != nullptr;
+                                            resultado->vertices->busca(verticeDestino->getId()) != nullptr;
 
                 if( naoVisitadoOuSolucao && pilhaDeVertices->busca(atual->getArestas()->iterator->getDestino()->getId()) == nullptr)
                 {
@@ -300,12 +340,14 @@ bool Grafo::aux(Grafo* resultado, TabelaHash* visitados, Vertice*  inicio)
     return false;
 }
 
-float Grafo::dijkstra(int id_origem ,int id_destino , ofstream& output )
+float Grafo::dijkstra(int id_origem,int id_destino, ofstream& output )
 {
-    if (id_origem != id_destino) {
+    if (id_origem != id_destino)
+    {
         Vertice *vertAtual = vertices->busca(id_origem);
 
-        if (vertAtual == nullptr || vertices->busca(id_destino) == nullptr){
+        if (vertAtual == nullptr || vertices->busca(id_destino) == nullptr)
+        {
             cout << "Vertice nao existe" << endl;
             return -1;
         }
@@ -322,7 +364,8 @@ float Grafo::dijkstra(int id_origem ,int id_destino , ofstream& output )
         int *vertAdj = new int[ordem];
         //marca os vertices adjacentes
 
-        for (int i = 0; i < ordem; i++) {
+        for (int i = 0; i < ordem; i++)
+        {
             distancia[i] = FLT_MAX;
 
             vertAdj[i] = -1;
@@ -336,7 +379,8 @@ float Grafo::dijkstra(int id_origem ,int id_destino , ofstream& output )
 
         float caminhoTam; // peso do caminho atual
 
-        while (vertAtual->getId() != id_destino) {
+        while (vertAtual->getId() != id_destino)
+        {
 
             for (int i = 0; i < ordem; i++)
             {
@@ -351,14 +395,16 @@ float Grafo::dijkstra(int id_origem ,int id_destino , ofstream& output )
 
             arestasNoAtual->iterator = arestasNoAtual->iteratorInicio();
 
-            while (arestasNoAtual->iterator != nullptr) {
+            while (arestasNoAtual->iterator != nullptr)
+            {
                 Aresta *a = arestasNoAtual->iterator;
 
                 int idVertAdj = a->getDestino()->getId();
 
                 vertAdj[idVertAdj] = 1;
 
-                if (distancia[idVertAdj] > caminhoTam + a->getPeso()) {
+                if (distancia[idVertAdj] > caminhoTam + a->getPeso())
+                {
 
                     distancia[idVertAdj] = caminhoTam + a->getPeso();
 
@@ -370,9 +416,12 @@ float Grafo::dijkstra(int id_origem ,int id_destino , ofstream& output )
 
                 int proxID = -1;
 
-                for (int i = 0; i < ordem; i++) {
-                    if (vertAdj[i] == 1) {
-                        if (distancia[i] < proxCaminho && visitado[i] != 1) {
+                for (int i = 0; i < ordem; i++)
+                {
+                    if (vertAdj[i] == 1)
+                    {
+                        if (distancia[i] < proxCaminho && visitado[i] != 1)
+                        {
                             proxCaminho = distancia[i];
                             proxID = i;
                         }

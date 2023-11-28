@@ -32,11 +32,10 @@ public:
     TabelaHash* remove(int chave);
     int getTamanhoTable();
 
-
-    void imprimeLista();
+    void imprimeComoTabela();
 
     Vertice *busca(int chave);
-
+    Vertice* setIterator(Vertice* v);
     Vertice* iteratorInicio();
     Vertice* proximo();
 

@@ -1,14 +1,16 @@
 #include "Vertice.h"
 
-Vertice::Vertice(int novoId, float novoPeso)
+Vertice::Vertice(int novoId, float novoPeso , int coordX , int coordY)
 {
-    id = novoId;
-    grauEntrada = 0;
-    grauSaida = 0;
-    peso = novoPeso;
-    visitado = false;
+    this->id = novoId;
+    this->grauEntrada = 0;
+    this->grauSaida = 0;
+    this->peso = novoPeso;
+    this->visitado = false;
+    this->coordX = coordX;
+    this->coordY = coordY;
 
-    arestas = new ListaArestas();
+    this->arestas = new ListaArestas();
 
     this->proximo = nullptr;
     this->anterior = nullptr;

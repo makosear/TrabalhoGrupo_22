@@ -228,7 +228,7 @@ Grafo *leituraPorAraquivo(ifstream &input_file, int directed, int weightedEdge, 
     {
         while (input_file >> id_o >> id_d >> peso_aresta)
         {
-             cout << "salve 3" << endl;
+            cout << "salve 3" << endl;
             g->insereVertice(id_o, peso_vertice_o);
             cout << "inserendo vertice " << id_o << " de peso " << peso_vertice_o << endl;
             g->insereVertice(id_d, peso_vertice_d);
@@ -241,7 +241,7 @@ Grafo *leituraPorAraquivo(ifstream &input_file, int directed, int weightedEdge, 
     {
         while (input_file >> id_o >> peso_vertice_o >> id_d >> peso_vertice_d)
         {
-             cout << "salve 4" << endl;
+            cout << "salve 4" << endl;
             g->insereVertice(id_o, peso_vertice_o);
             cout << "inserendo vertice " << id_o << " de peso " << peso_vertice_o << endl;
             g->insereVertice(id_d, peso_vertice_d);
@@ -266,6 +266,90 @@ Grafo *leituraPorAraquivo(ifstream &input_file, int directed, int weightedEdge, 
 
     return g;
 }
+
+Grafo *leituraPorAraquivoTipo2(ifstream &input_file)
+{
+    bool leitura_coords = false , leitura_demanda = false;
+    std::string linha;
+    int capacidade = 0, coordId = 0 , coordX = 0 ,coordY = 0 , coordDemanda = 0;
+
+    Grafo* g = new Grafo(0,0,1,1);
+
+    if (input_file.is_open())
+    {
+        while (std::getline(input_file, linha))
+        {
+            std::stringstream iss(linha);
+
+            if (linha.find("CAPACITY") != std::string::npos)
+            {
+                std::stringstream cap_stream(linha);
+                std::string token;
+                while (cap_stream >> token)
+                {
+                    if (token == "CAPACITY")
+                    {
+                        cap_stream >> capacidade;
+                        break;
+                    }
+                }
+            }
+
+            if (linha.find("NODE_COORD_SECTION") != std::string::npos)
+            {
+                leitura_coords = true;
+                leitura_demanda = false;
+                continue;
+            }
+
+             if (linha.find("DEMAND_SECTION") != std::string::npos)
+            {
+                leitura_coords = false;
+                leitura_demanda = true;
+                continue;
+            }
+
+            if (linha.find("DEPOT_SECTIO") != std::string::npos)
+            {
+                leitura_coords = false;
+                leitura_demanda = false;
+                continue;
+            }
+
+
+
+            if (leitura_coords)
+            {
+                iss >> coordId >> coordX >> coordY;
+                g->insereVertice(coordId , 1 , coordX , coordY);
+            }
+
+
+            if (leitura_demanda)
+            {
+                iss >> coordId >> coordDemanda;
+
+                cout << "coordId " << coordId << " coordDemanda " << coordDemanda << endl;
+
+                g->getVertice(coordId)->setPeso(coordDemanda);
+                //system("pause");
+            }
+
+        }
+
+        g->geraDistanciasDeVertices();
+        input_file.close();
+    }
+    else
+    {
+        std::cout << "Não foi possível abrir o arquivo." << std::endl;
+    }
+
+    system("pause");
+
+    return g;
+}
+
 int main()
 {
     ifstream input;
@@ -274,8 +358,8 @@ int main()
     input.open("grafo_teste.txt", ios::in);
     if(input.is_open())
     {
-        Grafo * xd = leituraPorAraquivo(input, 1, 0, 0);
-        escolhasAlgoritimos(xd , output_file);
+        Grafo * xd = leituraPorAraquivoTipo2(input);
+        escolhasAlgoritimos(xd, output_file);
     }
     input.close();
     return 0;

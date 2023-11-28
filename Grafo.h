@@ -58,11 +58,13 @@ public:
     };
 
     ///manipulacao da lista de vertices
-    bool insereVertice(int id_origem,float peso);
+    bool insereVertice(int id_origem,float peso , int coordX = 0 , int coordY = 0);
     void removeVertice(int id_origem);
     bool insereAresta(int id_origem, int id_destino, float peso = 1,  bool ehRetorno = false);
     void removeAresta(int id_origem, int id_destino);
 
+    Vertice* getVertice(int id);
+    void geraDistanciasDeVertices();
     Grafo* buscaEmLargura(int id);
 
 
